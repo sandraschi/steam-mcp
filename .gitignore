@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+.uv/
+uv.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Webapp
+webapp/node_modules/
+webapp/dist/
+
+# Tauri native
+native/target/
+native/binaries/
+native/gen/
+
+# Temp files
+server_pid.txt
+server_test.log
+
+# Environment
+.env
+.env.local
