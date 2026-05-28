@@ -29,3 +29,5 @@
 ## Tool Registration
 FastMCP registers tools at import time via @mcp.tool decorator.
 Portmanteau imports in `mcp/tools/__init__.py` must list all tool modules.
+
+Install docs: follow mcp-central-docs/standards/AGENT_INSTALL_REFERENCE.md
