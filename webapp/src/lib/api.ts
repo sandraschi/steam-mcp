@@ -13,11 +13,15 @@ export interface StatusResponse {
   has_steam_id: boolean;
   tool_count?: number;
   tools?: string[];
+  chat_mode?: string;
+  llm_available?: boolean;
   capabilities?: {
     prefab: boolean;
     agentic: boolean;
     prompts: boolean;
     resources: boolean;
+    skills?: boolean;
+    llm_chat?: boolean;
   };
 }
 

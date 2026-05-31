@@ -1,20 +1,49 @@
-# steam-mcp — full LLM corpus (v0.2.0)
+# steam-mcp — full LLM corpus (v0.3.0)
 
-See README.md for user-facing documentation.
+FastMCP 3.2 MCP server for Valve Steam Web API. Backend 11020, frontend 11021.
 
 ## Portmanteau surface
 
-- steam_profile: own, summaries, friends, resolve_vanity
-- steam_library: owned, recent, details, wishlist
-- steam_stats: achievements, global_percentages, players, leaderboards
-- steam_store: news, search, reviews
-- steam_workshop: query, item_details
-- steam_system: status, steamcmd_status
-- steam_help, agentic_steam_workflow, show_steam_status_card, show_library_card, show_store_search_card
+| Tool | Operations |
+|------|------------|
+| steam_profile | own, summaries, friends, resolve_vanity |
+| steam_library | owned, recent, details, wishlist |
+| steam_stats | achievements, global_percentages, players, leaderboards |
+| steam_store | news, search, reviews |
+| steam_workshop | query, item_details |
+| steam_system | status, steamcmd_status |
 
-## Auth
+Also: steam_help, agentic_steam_workflow, show_steam_status_card, show_library_card, show_store_search_card, show_workshop_card, show_player_count_card.
 
-STEAM_API_KEY, STEAM_ID, STEAMCMD_PATH, BACKEND_PORT=11020, FRONTEND_PORT=11021
+## Auth & env
+
+- STEAM_API_KEY — required for profile, library, workshop, wishlist
+- STEAM_ID — default 64-bit ID
+- STEAMCMD_PATH — optional SteamCMD detection
+- BACKEND_PORT=11020, FRONTEND_PORT=11021
+- STEAM_CHAT_MODE=hybrid|llm|rules
+- AI_PROVIDER, AI_ENDPOINT, AI_MODEL — web chat LLM routing
+- STEAM_PREFAB_APPS=0 — disable prefab-ui App tools
+
+## FastMCP 3.2 features
+
+- Portmanteau tools with markdown `message` + structured `data`
+- Prompts, resources, SkillsDirectoryProvider (skill://steam-mcp/SKILL.md)
+- Prefab UI cards (app=True when prefab-ui installed)
+- agentic_steam_workflow (MCP sampling when host supports ctx.sample)
+- Hybrid chat: Ollama JSON tool-call router + rule fallback
+
+## Packaging
+
+- manifest.json + build_mcpb.py → dist/steam-mcp.mcpb
+- glama.json — Glama discovery (repo only, not in MCPB)
+- native/ — Tauri 2 sidecar (steam-mcp-backend.exe on 11020)
+
+## REST (webapp)
+
+- GET /api/status, /api/tools, /api/llm/models
+- POST /api/chat, /api/tools/{name}/call, /api/llm/configure
+- MCP streamable HTTP at /mcp
 
 ## Skill
 
@@ -23,4 +52,3 @@ src/steam_mcp/skills/steam-mcp/SKILL.md
 ## Fleet
 
 mcp-central-docs/projects/steam-mcp/README.md
-operations/WEBAPP_PORTS.md ports 11020/11021

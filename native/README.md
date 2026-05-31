@@ -1,24 +1,38 @@
-# Steam-MCP Native Shell (Tauri 2) — Scaffold
+# Steam-MCP Native Shell (Tauri 2)
 
-Planned desktop wrapper around the Vite dashboard and Python backend sidecar.
+Desktop wrapper around the Vite dashboard and Python backend sidecar (port **11020**).
 
-## Status
+## Prerequisites
 
-**Deferred** — use `start.ps1` or `webapp/start.ps1` for now.
-
-## Target layout
-
-```
-native/
-  src-tauri/     # Tauri 2 app
-  package.json   # tauri CLI scripts
-  build.ps1      # sidecar + bundle
-```
-
-## Build prerequisites (future)
-
-- Rust toolchain
+- Rust toolchain (`rustup`)
 - Node.js 20+
-- Built backend sidecar (`uv run pyinstaller` or fleet standard)
+- `uv` + Python 3.12
+- Visual Studio Build Tools (Windows)
 
-See `email-mcp/native/` for reference implementation.
+## Dev
+
+```powershell
+# Terminal 1 — backend
+just serve
+
+# Terminal 2 — Tauri + Vite (proxies /api → 11020)
+cd native
+npm install
+npm run dev
+```
+
+## Release build
+
+```powershell
+.\native\build.ps1
+```
+
+Steps: webapp `npm run build` → PyInstaller sidecar → Tauri NSIS installer.
+
+Sidecar only:
+
+```powershell
+.\native\build-sidecar.ps1
+```
+
+Reference: `email-mcp/native/` (same fleet pattern).

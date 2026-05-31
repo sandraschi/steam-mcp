@@ -1,0 +1,53 @@
+{
+  "manifest_version": "0.2",
+  "name": "steam-mcp",
+  "version": "0.3.0",
+  "description": "MCP server for Valve Steam — profile, library, stats, store, and Workshop portmanteau tools with prefab cards and agentic workflows",
+  "author": {
+    "name": "FlowEngineer"
+  },
+  "server": {
+    "type": "python",
+    "entry_point": "src/steam_mcp/server.py",
+    "mcp_config": {
+      "command": "python",
+      "args": ["-m", "steam_mcp.server", "--stdio"],
+      "env": {
+        "PYTHONPATH": "${PWD}/src",
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  },
+  "user_config": {
+    "steam_api_key": {
+      "type": "string",
+      "title": "Steam Web API Key",
+      "description": "From steamcommunity.com/dev/apikey — required for profile, library, workshop",
+      "required": false,
+      "default": "",
+      "secret": true
+    },
+    "steam_id": {
+      "type": "string",
+      "title": "Steam ID",
+      "description": "64-bit Steam ID for default profile/library queries",
+      "required": false,
+      "default": ""
+    }
+  },
+  "tools": [
+    {"name": "steam_profile", "description": "Profile: own, summaries, friends, resolve_vanity"},
+    {"name": "steam_library", "description": "Library: owned, recent, details, wishlist"},
+    {"name": "steam_stats", "description": "Stats: achievements, global_percentages, players, leaderboards"},
+    {"name": "steam_store", "description": "Store: news, search, reviews"},
+    {"name": "steam_workshop", "description": "Workshop: query, item_details"},
+    {"name": "steam_system", "description": "System: status, steamcmd_status"},
+    {"name": "steam_help", "description": "Help and operation reference"},
+    {"name": "agentic_steam_workflow", "description": "Multi-step Steam workflow via MCP sampling"},
+    {"name": "show_steam_status_card", "description": "Prefab card: connectivity and auth status"},
+    {"name": "show_library_card", "description": "Prefab card: owned games summary"},
+    {"name": "show_store_search_card", "description": "Prefab card: store search results"},
+    {"name": "show_workshop_card", "description": "Prefab card: Workshop search results"},
+    {"name": "show_player_count_card", "description": "Prefab card: concurrent player count"}
+  ]
+}

@@ -32,8 +32,17 @@ async def test_api_status(client):
     r = await client.get("/api/status")
     data = r.json()
     assert data["status"] == "ok"
-    assert data["version"] == "0.2.0"
+    assert data["version"] == "0.3.0"
     assert data["tool_count"] >= 10
+
+
+@pytest.mark.asyncio
+async def test_llm_models(client):
+    r = await client.get("/api/llm/models")
+    assert r.status_code == 200
+    data = r.json()
+    assert "providers" in data
+    assert "active" in data
 
 
 @pytest.mark.asyncio

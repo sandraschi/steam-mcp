@@ -2,36 +2,47 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
+import httpx
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse, PlainTextResponse
 
-from .chat import handle_chat_query
+from . import __version__
+from .ai import ollama_available
+from .chat import get_ai_router, handle_chat_query
 from .config import settings
 from .mcp.registry import mcp
 
 
 def setup_webapp(app: FastAPI) -> None:
+    ai_router = get_ai_router()
+
     @app.get("/health")
     async def health():
-        return {"status": "ok"}
+        return {"status": "ok", "version": __version__}
 
     @app.get("/api/status")
     async def api_status():
         tools = await mcp.list_tools()
         tool_names = [t.name for t in tools]
+        llm_up = await ollama_available()
         return {
             "status": "ok",
-            "version": "0.2.1",
+            "version": __version__,
             "has_api_key": settings.has_api_key,
             "has_steam_id": settings.has_steam_id,
             "tool_count": len(tools),
             "tools": tool_names,
+            "chat_mode": settings.chat_mode,
+            "llm_available": llm_up,
             "capabilities": {
-                "prefab": any(n.startswith("show_") for n in tool_names),
+                "prefab": settings.prefab_apps and any(n.startswith("show_") for n in tool_names),
                 "agentic": "agentic_steam_workflow" in tool_names,
                 "prompts": True,
                 "resources": True,
+                "skills": True,
+                "llm_chat": llm_up or settings.chat_mode == "rules",
             },
         }
 
@@ -100,6 +111,64 @@ def setup_webapp(app: FastAPI) -> None:
                 message = content
             return {"response": message}
         return await handle_chat_query(query)
+
+    @app.get("/api/llm/models")
+    async def get_llm_models():
+        providers: list[dict[str, Any]] = []
+        async with httpx.AsyncClient(timeout=3.0) as client:
+            ollama_ok = False
+            for host in ("http://127.0.0.1:11434", "http://localhost:11434"):
+                try:
+                    r = await client.get(f"{host}/api/tags")
+                    if r.status_code == 200:
+                        models = [m["name"] for m in r.json().get("models", [])]
+                        providers.append(
+                            {
+                                "id": "ollama",
+                                "name": "Ollama",
+                                "endpoint": f"{host}/v1/chat/completions",
+                                "available": True,
+                                "models": models,
+                            }
+                        )
+                        ollama_ok = True
+                        break
+                except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError):
+                    continue
+            if not ollama_ok:
+                providers.append(
+                    {
+                        "id": "ollama",
+                        "name": "Ollama",
+                        "endpoint": "http://127.0.0.1:11434/v1/chat/completions",
+                        "available": False,
+                        "models": [],
+                    }
+                )
+        return {
+            "providers": providers,
+            "active": {
+                "provider": ai_router.provider,
+                "endpoint": ai_router.endpoint,
+                "model": ai_router.model,
+                "chat_mode": settings.chat_mode,
+            },
+        }
+
+    @app.post("/api/llm/configure")
+    async def configure_llm(body: dict):
+        if "provider" in body:
+            ai_router.provider = str(body["provider"])
+            settings.ai_provider = ai_router.provider
+        if "endpoint" in body:
+            ai_router.endpoint = str(body["endpoint"])
+            settings.ai_endpoint = ai_router.endpoint
+        if "model" in body:
+            ai_router.model = str(body["model"])
+            settings.ai_model = ai_router.model
+        if "chat_mode" in body:
+            settings.chat_mode = str(body["chat_mode"]).lower()
+        return {"success": True, "active": {"provider": ai_router.provider, "model": ai_router.model}}
 
     @app.get("/resource://steam/capabilities")
     async def resource_capabilities():

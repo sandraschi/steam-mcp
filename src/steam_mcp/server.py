@@ -1,9 +1,11 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from . import __version__
 from .client import close_client, init_client
 from .config import settings
 from .mcp import tools as _tools  # noqa: F401 — triggers @mcp.tool registration
@@ -13,10 +15,27 @@ from .web import setup_webapp
 logger = structlog.get_logger("steam-mcp")
 
 
+def _register_skills_provider() -> None:
+    try:
+        from fastmcp.server.providers.skills import SkillsDirectoryProvider
+    except ImportError:
+        return
+    roots = Path(__file__).resolve().parent / "skills"
+    if not roots.is_dir():
+        return
+    try:
+        mcp.add_provider(SkillsDirectoryProvider(roots=roots))
+    except (OSError, UnicodeError, ValueError) as exc:
+        logger.warning("skills_provider_skipped", error=str(exc))
+
+
+_register_skills_provider()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_client()
-    logger.info("steam_mcp_started", port=settings.backend_port)
+    logger.info("steam_mcp_started", port=settings.backend_port, version=__version__)
     yield
     await close_client()
     logger.info("steam_mcp_stopped")
@@ -24,7 +43,7 @@ async def lifespan(app: FastAPI):
 
 _mcp_asgi = mcp.http_app(path="/")
 
-app = FastAPI(title="Steam-MCP", version="0.2.1", lifespan=lifespan)
+app = FastAPI(title="Steam-MCP", version=__version__, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

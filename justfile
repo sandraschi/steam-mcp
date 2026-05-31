@@ -16,7 +16,7 @@ install:
 lint:
     uv run ruff check src/ tests/
 
-format:
+fmt:
     uv run ruff format src/ tests/
 
 test:
@@ -24,6 +24,9 @@ test:
 
 smoke:
     uv run python scripts/smoke_test.py
+
+mcpb-pack:
+    uv run python build_mcpb.py
 
 frontend-install:
     cd webapp; npm install
@@ -33,6 +36,15 @@ frontend-dev:
 
 frontend-build:
     cd webapp; npm run build
+
+native-sidecar:
+    pwsh -NoLogo -File native/build-sidecar.ps1
+
+native-build:
+    pwsh -NoLogo -File native/build.ps1
+
+native-dev:
+    cd native; npm install; npm run dev
 
 e2e:
     cd webapp; npx playwright test

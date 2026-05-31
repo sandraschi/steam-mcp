@@ -12,6 +12,18 @@ class Settings:
     frontend_port: int = field(default_factory=lambda: int(os.getenv("FRONTEND_PORT", "11021")))
     log_level: str = field(default_factory=lambda: os.getenv("LOG_LEVEL", "warning"))
     steamcmd_path: str = field(default_factory=lambda: os.getenv("STEAMCMD_PATH", ""))
+    prefab_apps: bool = field(
+        default_factory=lambda: os.getenv("STEAM_PREFAB_APPS", "1").strip().lower() not in ("0", "false", "no")
+    )
+    chat_mode: str = field(default_factory=lambda: os.getenv("STEAM_CHAT_MODE", "hybrid").strip().lower())
+    ai_provider: str = field(default_factory=lambda: os.getenv("AI_PROVIDER", "ollama").strip().lower())
+    ai_endpoint: str = field(
+        default_factory=lambda: os.getenv(
+            "AI_ENDPOINT",
+            os.getenv("STEAM_SAMPLING_BASE_URL", "http://127.0.0.1:11434/v1/chat/completions"),
+        )
+    )
+    ai_model: str = field(default_factory=lambda: os.getenv("AI_MODEL", "llama3.1:8b"))
 
     @property
     def has_api_key(self) -> bool:

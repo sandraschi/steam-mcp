@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 (2026-05-31)
+
+- Hybrid web chat: Ollama/OpenAI-compatible LLM router + rule fallback (`STEAM_CHAT_MODE`)
+- REST: `/api/llm/models`, `/api/llm/configure`
+- FastMCP `SkillsDirectoryProvider` wired in server
+- MCPB: `manifest.json`, `build_mcpb.py`, `just mcpb-pack`
+- Tauri 2 native scaffold: sidecar spec, `native/build.ps1`, fleet-aligned layout
+- Prefab: `show_workshop_card`, `STEAM_PREFAB_APPS` toggle
+- Docs: expanded `llms.txt`, `llms-full.txt`, `AGENTS.md`
+
 ## 0.2.1 (2026-05-31)
 
 - Chat orchestrator (`/api/chat`) with Ask Steam + tool console UI

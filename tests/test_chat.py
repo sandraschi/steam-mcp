@@ -1,4 +1,4 @@
-from steam_mcp.chat import _extract_app_id, _extract_query
+from steam_mcp.chat_rules import _extract_app_id, _extract_query
 
 
 def test_extract_app_id():

@@ -1,6 +1,6 @@
 {
   "name": "steam-mcp",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "FastMCP 3.2 Steam portmanteau server — profile, library, stats, store, workshop",
   "author": "Sandra Schipal",
   "license": "MIT",

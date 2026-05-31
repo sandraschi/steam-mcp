@@ -1,3 +1,4 @@
 target/
+binaries/
 node_modules/
-dist/
+Cargo.lock
