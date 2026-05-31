@@ -1,6 +1,6 @@
 [package]
 name = "steam-mcp-native"
-version = "0.3.0"
+version = "0.3.1"
 description = "Tauri 2.0 native wrapper for steam-mcp webapp"
 edition = "2021"
 

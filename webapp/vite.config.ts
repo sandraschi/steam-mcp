@@ -14,6 +14,8 @@ export default defineConfig({
     proxy: {
       "/api": { target: "http://127.0.0.1:11020", changeOrigin: true },
       "/mcp": { target: "http://127.0.0.1:11020", changeOrigin: true },
+      "/.well-known": { target: "http://127.0.0.1:11020", changeOrigin: true },
+      "/health": { target: "http://127.0.0.1:11020", changeOrigin: true },
     },
   },
 });

@@ -1,5 +1,5 @@
 # steam-mcp
-> MCP server for Valve Steam — portmanteau tools, prefab cards, hybrid LLM chat, Tauri native shell. v0.3.0 · ports 11020/11021.
+> MCP server for Valve Steam — portmanteau tools, prefab cards, hybrid LLM chat, Tauri native shell. v0.3.1 · ports 11020/11021.
 
 ## Docs
 - [Readme](README.md): Quick start, tools, architecture
@@ -7,6 +7,11 @@
 - [Agents](AGENTS.md): Agent context for Codex/Cursor
 - [Skill](src/steam_mcp/skills/steam-mcp/SKILL.md): Workflow skill for MCP hosts
 - [Native](native/README.md): Tauri desktop wrapper
+- [Install](install-mcp.ps1): MCP client installer script
+
+## Discovery
+- Well-known: http://127.0.0.1:11020/.well-known/mcp/manifest.json
+- Capabilities: http://127.0.0.1:11020/api/capabilities
 
 ## Configuration
 - [Pyproject](pyproject.toml): Python dependencies (FastMCP 3.2, prefab-ui)

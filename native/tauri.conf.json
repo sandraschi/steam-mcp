@@ -1,6 +1,6 @@
 {
   "productName": "Steam MCP",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "identifier": "ai.fleet.steam-mcp",
   "build": {
     "frontendDist": "../webapp/dist",

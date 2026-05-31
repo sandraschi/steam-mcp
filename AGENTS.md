@@ -1,7 +1,7 @@
 # Steam-MCP Agent Context
 
 ## Repo
-`steam-mcp` — FastMCP 3.2 portmanteau server for Steam profile, library, stats, store, and Workshop. **v0.3.0**
+`steam-mcp` — FastMCP 3.2 portmanteau server for Steam profile, library, stats, store, and Workshop. **v0.3.1**
 
 ## Ports
 - Backend: 11020 (FastAPI + MCP HTTP at /mcp)

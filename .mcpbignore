@@ -1,0 +1,27 @@
+# Logic/Dev bloat
+.venv/
+node_modules/
+__pycache__/
+.ruff_cache/
+.pytest_cache/
+tests/
+webapp/
+native/
+dist/
+build/
+*.egg-info/
+
+# Discovery & fleet metadata (repo-only)
+glama.json
+llms.txt
+llms-full.txt
+mcpb.json
+.git/
+.github/
+.vscode/
+.cursor/
+
+# Build artifacts
+*.mcpb
+*.exe
+uv.lock

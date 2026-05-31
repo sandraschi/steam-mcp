@@ -1,19 +1,30 @@
 {
   "manifest_version": "0.2",
   "name": "steam-mcp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "MCP server for Valve Steam — profile, library, stats, store, and Workshop portmanteau tools with prefab cards and agentic workflows",
+  "long_description": "FastMCP 3.2 Steam portmanteau server with React dashboard, hybrid Ollama chat, Prefab UI cards, MCP sampling workflows, and fleet discovery at /.well-known/mcp/manifest.json. Backend 11020, frontend 11021.",
   "author": {
-    "name": "FlowEngineer"
+    "name": "Sandra Schipal",
+    "email": "sandra@theagenticmines.at"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sandraschi/steam-mcp"
+  },
+  "homepage": "https://github.com/sandraschi/steam-mcp",
+  "documentation": "https://github.com/sandraschi/steam-mcp/blob/master/README.md",
+  "license": "MIT",
+  "icon": "assets/icon.png",
+  "keywords": ["mcp", "steam", "gaming", "valve", "fastmcp", "webapp"],
   "server": {
     "type": "python",
     "entry_point": "src/steam_mcp/server.py",
     "mcp_config": {
-      "command": "python",
-      "args": ["-m", "steam_mcp.server", "--stdio"],
+      "command": "uv",
+      "args": ["run", "--directory", "${__dirname}", "steam-mcp"],
       "env": {
-        "PYTHONPATH": "${PWD}/src",
+        "PYTHONPATH": "${__dirname}/src",
         "PYTHONUNBUFFERED": "1"
       }
     }
@@ -33,6 +44,13 @@
       "description": "64-bit Steam ID for default profile/library queries",
       "required": false,
       "default": ""
+    },
+    "STEAM_PREFAB_APPS": {
+      "type": "string",
+      "title": "Prefab cards",
+      "description": "1=on, 0=off for headless MCP clients",
+      "required": false,
+      "default": "1"
     }
   },
   "tools": [
@@ -49,5 +67,8 @@
     {"name": "show_store_search_card", "description": "Prefab card: store search results"},
     {"name": "show_workshop_card", "description": "Prefab card: Workshop search results"},
     {"name": "show_player_count_card", "description": "Prefab card: concurrent player count"}
-  ]
+  ],
+  "compatibility": {
+    "platforms": ["win32", "darwin", "linux"]
+  }
 }

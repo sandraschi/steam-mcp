@@ -1,4 +1,5 @@
-const BASE = "/api";
+const API_ROOT = (import.meta.env.VITE_API_BASE as string | undefined)?.replace(/\/$/, "") ?? "";
+const BASE = `${API_ROOT}/api`;
 
 export interface ApiResponse<T = unknown> {
   success: boolean;

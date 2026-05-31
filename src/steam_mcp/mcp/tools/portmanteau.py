@@ -7,7 +7,7 @@ from typing import Annotated, Any, Literal
 from pydantic import Field
 
 from ...services import library, profile, publish, stats, store, workshop
-from ..registry import mcp
+from ..registry import TOOL_VERSION, mcp
 
 ProfileOp = Literal["own", "summaries", "friends", "resolve_vanity"]
 LibraryOp = Literal["owned", "recent", "details", "wishlist"]
@@ -17,7 +17,7 @@ WorkshopOp = Literal["query", "item_details"]
 SystemOp = Literal["status", "steamcmd_status"]
 
 
-@mcp.tool(version="0.2.0")
+@mcp.tool(version=TOOL_VERSION)
 async def steam_profile(
     operation: Annotated[ProfileOp, Field(description="Profile operation to run.")],
     steamid: Annotated[str, Field(description="64-bit Steam ID when required.")] = "",
@@ -44,7 +44,7 @@ async def steam_profile(
     return {"success": False, "message": f"Unknown operation: {operation}", "data": None}
 
 
-@mcp.tool(version="0.2.0")
+@mcp.tool(version=TOOL_VERSION)
 async def steam_library(
     operation: Annotated[LibraryOp, Field(description="Library operation to run.")],
     steamid: Annotated[str, Field(description="64-bit Steam ID (defaults to STEAM_ID).")] = "",
@@ -67,7 +67,7 @@ async def steam_library(
     return {"success": False, "message": f"Unknown operation: {operation}", "data": None}
 
 
-@mcp.tool(version="0.2.0")
+@mcp.tool(version=TOOL_VERSION)
 async def steam_stats(
     operation: Annotated[StatsOp, Field(description="Stats operation to run.")],
     steamid: Annotated[str, Field(description="64-bit Steam ID for player achievements.")] = "",
@@ -93,7 +93,7 @@ async def steam_stats(
     return {"success": False, "message": f"Unknown operation: {operation}", "data": None}
 
 
-@mcp.tool(version="0.2.0")
+@mcp.tool(version=TOOL_VERSION)
 async def steam_store(
     operation: Annotated[StoreOp, Field(description="Store operation to run.")],
     app_id: Annotated[int, Field(description="Steam App ID for news/reviews.")] = 0,
@@ -116,7 +116,7 @@ async def steam_store(
     return {"success": False, "message": f"Unknown operation: {operation}", "data": None}
 
 
-@mcp.tool(version="0.2.0")
+@mcp.tool(version=TOOL_VERSION)
 async def steam_workshop(
     operation: Annotated[WorkshopOp, Field(description="Workshop operation to run.")],
     app_id: Annotated[int, Field(description="Steam App ID for query.")] = 0,
@@ -138,7 +138,7 @@ async def steam_workshop(
     return {"success": False, "message": f"Unknown operation: {operation}", "data": None}
 
 
-@mcp.tool(version="0.2.0")
+@mcp.tool(version=TOOL_VERSION)
 async def steam_system(
     operation: Annotated[SystemOp, Field(description="System operation: status or steamcmd_status.")],
 ) -> dict[str, Any]:

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1 (2026-05-31)
+
+- Fleet SOTA completion: `/.well-known/mcp/manifest.json`, `/api/capabilities`
+- MCPB `assets/prompts/` (system, user, examples, workflows, troubleshooting) + `assets/icon.png`
+- `install-mcp.ps1`, `.mcpbignore`, enhanced `manifest.json`
+- `scripts/generate_llms_full.py`, CI MCPB artifact, release workflow (MCPB + Windows Tauri)
+- Webapp `VITE_API_BASE` for Tauri production; tool versions via `TOOL_VERSION`
+- `glama.json` discovery URLs; deprecated legacy `mcpb.json` stub
+
 ## 0.3.0 (2026-05-31)
 
 - Hybrid web chat: Ollama/OpenAI-compatible LLM router + rule fallback (`STEAM_CHAT_MODE`)

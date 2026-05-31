@@ -28,6 +28,12 @@ smoke:
 mcpb-pack:
     uv run python build_mcpb.py
 
+llms-full:
+    uv run python scripts/generate_llms_full.py
+
+install-mcp CLIENT="print":
+    pwsh -NoLogo -File install-mcp.ps1 {{CLIENT}}
+
 frontend-install:
     cd webapp; npm install
 

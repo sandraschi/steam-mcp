@@ -2,7 +2,7 @@
   <img src="https://img.shields.io/badge/python-3.12+-blue?logo=python" alt="Python">
   <img src="https://img.shields.io/badge/fastmcp-3.2+-purple" alt="FastMCP">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
-  <img src="https://img.shields.io/badge/version-0.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-0.3.1-blue" alt="Version">
 </p>
 
 <p align="center">
@@ -13,7 +13,22 @@
 
 # Steam-MCP
 
-**FastMCP 3.2 portmanteau server for Valve Steam** — profile, library, stats, store, Workshop, and SteamCMD status. React dashboard with tool console, Prefab cards, prompts, resources, and agentic workflow.
+**FastMCP 3.2 portmanteau server for Valve Steam** — profile, library, stats, store, Workshop, SteamCMD status. React dashboard with hybrid Ollama chat, Prefab cards, fleet discovery (`/.well-known/mcp/manifest.json`), MCPB bundle, and Tauri native shell.
+
+---
+
+## Fleet SOTA (v0.3.1)
+
+| Item | Status |
+|------|--------|
+| Portmanteau + Prefab + agentic | ✅ |
+| `manifest.json` + `just mcpb-pack` | ✅ |
+| `assets/prompts/` (MCPB 3-4-100) | ✅ |
+| `install-mcp.ps1` | ✅ |
+| `/.well-known/mcp/manifest.json` | ✅ |
+| `GET /api/capabilities` | ✅ |
+| `llms.txt` + generated `llms-full.txt` | ✅ |
+| Tauri scaffold + release CI | ✅ |
 
 ---
 
@@ -48,7 +63,11 @@ just serve              # backend :11020
 .\start.ps1             # backend + frontend :11021
 ```
 
-MCP: `http://localhost:11020/mcp` · REST: `/api/status`, `/api/tools/{name}/call`
+MCP: `http://localhost:11020/mcp` · REST: `/api/status`, `/api/capabilities`, `/api/tools/{name}/call`
+
+Discovery: `http://localhost:11020/.well-known/mcp/manifest.json`
+
+Install MCP client: `.\install-mcp.ps1 print` · MCPB: `just mcpb-pack`
 
 ---
 

@@ -32,8 +32,29 @@ async def test_api_status(client):
     r = await client.get("/api/status")
     data = r.json()
     assert data["status"] == "ok"
-    assert data["version"] == "0.3.0"
+    assert data["version"] == "0.3.1"
     assert data["tool_count"] >= 10
+
+
+@pytest.mark.asyncio
+async def test_well_known_manifest(client):
+    r = await client.get("/.well-known/mcp/manifest.json")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["name"] == "steam-mcp"
+    assert "mcp" in data
+    assert data["mcp"]["http_url"].endswith("/mcp")
+
+
+@pytest.mark.asyncio
+async def test_api_capabilities(client):
+    r = await client.get("/api/capabilities")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["status"] == "ok"
+    assert data["server"]["version"] == "0.3.1"
+    assert data["tools"]["count"] >= 10
+    assert data["endpoints"]["manifest"] == "/.well-known/mcp/manifest.json"
 
 
 @pytest.mark.asyncio

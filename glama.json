@@ -1,26 +1,44 @@
-{
-  "name": "steam-mcp",
-  "version": "0.3.0",
-  "description": "FastMCP 3.2 Steam portmanteau server — profile, library, stats, store, workshop",
-  "author": "Sandra Schipal",
-  "license": "MIT",
-  "capabilities": {
-    "tools": [
-      {"name": "steam_profile", "description": "Profile: own, summaries, friends, resolve_vanity"},
-      {"name": "steam_library", "description": "Library: owned, recent, details, wishlist"},
-      {"name": "steam_stats", "description": "Stats: achievements, global_percentages, players, leaderboards"},
-      {"name": "steam_store", "description": "Store: news, search, reviews"},
-      {"name": "steam_workshop", "description": "Workshop: query, item_details"},
-      {"name": "steam_system", "description": "System: status, steamcmd_status"},
-      {"name": "steam_help", "description": "Multi-level help"},
-      {"name": "agentic_steam_workflow", "description": "SEP-1577 agentic sampling workflow"}
-    ]
-  },
-  "environment_variables": [
-    "STEAM_API_KEY",
-    "STEAM_ID",
-    "STEAMCMD_PATH",
-    "BACKEND_PORT",
-    "FRONTEND_PORT"
-  ]
-}
+{
+  "name": "steam-mcp",
+  "version": "0.3.1",
+  "description": "FastMCP 3.2 Steam portmanteau server — profile, library, stats, store, workshop",
+  "author": "Sandra Schipal",
+  "license": "MIT",
+  "homepage": "https://github.com/sandraschi/steam-mcp",
+  "capabilities": {
+    "tools": { "enabled": true },
+    "prompts": { "enabled": true },
+    "resources": { "enabled": true }
+  },
+  "tools": [
+    {"name": "steam_profile", "description": "Profile: own, summaries, friends, resolve_vanity"},
+    {"name": "steam_library", "description": "Library: owned, recent, details, wishlist"},
+    {"name": "steam_stats", "description": "Stats: achievements, global_percentages, players, leaderboards"},
+    {"name": "steam_store", "description": "Store: news, search, reviews"},
+    {"name": "steam_workshop", "description": "Workshop: query, item_details"},
+    {"name": "steam_system", "description": "System: status, steamcmd_status"},
+    {"name": "steam_help", "description": "Multi-level help"},
+    {"name": "agentic_steam_workflow", "description": "SEP-1577 agentic sampling workflow"},
+    {"name": "show_steam_status_card", "description": "Prefab status card"},
+    {"name": "show_library_card", "description": "Prefab library card"},
+    {"name": "show_store_search_card", "description": "Prefab store search card"},
+    {"name": "show_workshop_card", "description": "Prefab workshop card"},
+    {"name": "show_player_count_card", "description": "Prefab player count card"}
+  ],
+  "environment_variables": [
+    "STEAM_API_KEY",
+    "STEAM_ID",
+    "STEAMCMD_PATH",
+    "BACKEND_PORT",
+    "FRONTEND_PORT",
+    "STEAM_CHAT_MODE",
+    "STEAM_PREFAB_APPS",
+    "AI_ENDPOINT",
+    "AI_MODEL"
+  ],
+  "discovery": {
+    "well_known": "http://127.0.0.1:11020/.well-known/mcp/manifest.json",
+    "capabilities": "http://127.0.0.1:11020/api/capabilities",
+    "mcp_http": "http://127.0.0.1:11020/mcp"
+  }
+}

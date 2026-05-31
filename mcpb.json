@@ -1,27 +1,9 @@
 {
+  "_note": "Deprecated — use manifest.json (MCPB v0.2 canonical). Kept for legacy tooling only.",
+  "canonical": "manifest.json",
   "name": "steam-mcp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "server",
   "runtime": "python",
-  "entry_point": "src/steam_mcp/server.py",
-  "dependencies": [
-    "fastmcp>=3.2.0,<4",
-    "prefab-ui>=0.14.0"
-  ],
-  "build": {
-    "include": [
-      "src/**/*",
-      "README.md",
-      "LICENSE"
-    ],
-    "exclude": [
-      "tests/",
-      ".git/",
-      "webapp/",
-      "__pycache__/"
-    ]
-  },
-  "scripts": {
-    "test": "uv run pytest"
-  }
+  "entry_point": "src/steam_mcp/server.py"
 }

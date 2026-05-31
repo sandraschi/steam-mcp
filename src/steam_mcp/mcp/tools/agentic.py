@@ -8,12 +8,12 @@ from typing import Annotated
 from fastmcp import Context
 from pydantic import Field
 
-from ..registry import mcp
+from ..registry import TOOL_VERSION, mcp
 
 logger = logging.getLogger("steam-mcp.agentic")
 
 
-@mcp.tool(version="0.2.0")
+@mcp.tool(version=TOOL_VERSION)
 async def agentic_steam_workflow(
     goal: Annotated[str, Field(description="Natural language Steam goal, e.g. 'find Godot games and player counts'.")],
     ctx: Context,

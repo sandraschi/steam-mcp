@@ -1,35 +1,47 @@
-name: CI
-
-on:
-  push:
-    branches: [master, main]
-  pull_request:
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: uv sync --extra test --extra dev
-
-      - name: Ruff
-        run: uv run ruff check src/ tests/
-
-      - name: Pytest
-        run: uv run pytest tests/ -q
-
-      - name: Ty (non-blocking)
-        continue-on-error: true
-        run: |
-          uv tool install ty || true
-          uv tool run ty check src/ || true
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync --extra test --extra dev
+
+      - name: Ruff
+        run: uv run ruff check src/ tests/
+
+      - name: Pytest
+        run: uv run pytest tests/ -q
+
+      - name: Generate llms-full.txt
+        run: uv run python scripts/generate_llms_full.py
+
+      - name: Build MCPB bundle
+        run: uv run python build_mcpb.py
+
+      - name: Upload MCPB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: steam-mcp-mcpb
+          path: dist/*.mcpb
+
+      - name: Ty (non-blocking)
+        continue-on-error: true
+        run: |
+          uv tool install ty || true
+          uv tool run ty check src/ || true

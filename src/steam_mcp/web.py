@@ -12,6 +12,7 @@ from . import __version__
 from .ai import ollama_available
 from .chat import get_ai_router, handle_chat_query
 from .config import settings
+from .discovery import build_capabilities, build_well_known_manifest
 from .mcp.registry import mcp
 
 
@@ -169,6 +170,14 @@ def setup_webapp(app: FastAPI) -> None:
         if "chat_mode" in body:
             settings.chat_mode = str(body["chat_mode"]).lower()
         return {"success": True, "active": {"provider": ai_router.provider, "model": ai_router.model}}
+
+    @app.get("/api/capabilities")
+    async def api_capabilities():
+        return await build_capabilities()
+
+    @app.get("/.well-known/mcp/manifest.json")
+    async def well_known_mcp_manifest():
+        return build_well_known_manifest()
 
     @app.get("/resource://steam/capabilities")
     async def resource_capabilities():

@@ -6,12 +6,12 @@ from typing import Annotated, Literal
 
 from pydantic import Field
 
-from ..registry import mcp
+from ..registry import TOOL_VERSION, mcp
 
 HelpLevel = Literal["brief", "full", "operations"]
 
 
-@mcp.tool(version="0.2.0")
+@mcp.tool(version=TOOL_VERSION)
 async def steam_help(
     level: Annotated[HelpLevel, Field(description="Help depth: brief, full, or operations.")] = "brief",
 ) -> dict:
@@ -40,7 +40,8 @@ async def steam_help(
             "## Steam-MCP Full Help\n\n"
             "Backend :11020, frontend :11021, MCP at `/mcp`.\n\n"
             "Resources: `resource://steam/capabilities`, `resource://steam/quickstart`.\n\n"
-            "Prefab: `show_steam_status_card`, `show_library_card`, `show_store_search_card`.\n\n"
+            "Prefab: `show_steam_status_card`, `show_library_card`, `show_store_search_card`, "
+            "`show_workshop_card`, `show_player_count_card`.\n\n"
             "Agentic: `agentic_steam_workflow(goal='…')` when host supports sampling."
         )
     return {"success": True, "message": text, "data": {"level": level}}

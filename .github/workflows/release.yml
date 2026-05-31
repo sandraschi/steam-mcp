@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  mcpb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: uv sync --extra dev
+      - run: uv run python build_mcpb.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: steam-mcp-mcpb-release
+          path: dist/*.mcpb
+
+  native-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Build webapp
+        working-directory: webapp
+        run: |
+          npm install
+          npm run build
+      - name: Build PyInstaller sidecar
+        shell: pwsh
+        run: pwsh -NoLogo -File native/build-sidecar.ps1
+      - name: Build Tauri
+        working-directory: native
+        run: |
+          npm install
+          npx @tauri-apps/cli build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: steam-mcp-native-windows
+          path: native/target/release/bundle/**/*.exe
