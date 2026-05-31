@@ -1,14 +1,22 @@
 # Changelog
 
+## 0.2.1 (2026-05-31)
+
+- Chat orchestrator (`/api/chat`) with Ask Steam + tool console UI
+- Tauri native scaffold README (deferred build)
+- Fleet launcher `starts/steam-mcp-start.bat`
+
+## 0.2.0 (2026-05-31)
+
+- **Breaking:** Replaced 14 atomic tools with 6 portmanteau tools + help/agentic/prefab
+- Added `steam_store(operation='reviews')`, `steam_library(operation='wishlist')`, `steam_workshop(operation='item_details')`
+- FastMCP 3.2: prompts, resources, prefab-ui cards, `agentic_steam_workflow`
+- Shared httpx client lifespan, structlog, markdown formatters
+- Webapp: Chat tool console, live Games/Profile pages, Settings connectivity tests
+- Fleet: `llms.txt`, `glama.json`, `mcpb.json`, CI, pytest, pre-commit
+- Docs aligned with mcp-central-docs SOTA bash
+
 ## 0.1.0 (2026-05-25)
 
-- Initial release: 14 MCP tools across 5 categories
-- Profile: get_own_profile, get_player_summaries, get_friend_list, resolve_vanity_url
-- Library: get_owned_games, get_recently_played_games, get_app_details
-- Stats: get_player_achievements, get_global_achievement_percentages, get_number_of_current_players, get_game_leaderboards
-- Store: get_news_for_app, search_store
-- Workshop: query_workshop_items
-- FastAPI + FastMCP HTTP bridge on port 11020
-- React dashboard (Vite + Tailwind) on port 11021
-- REST bridge at /api/status, /api/tools, /api/tools/{name}/call
-- Ports registered in fleet registry
+- Initial release: 14 atomic MCP tools
+- FastAPI + React dashboard on ports 11020/11021

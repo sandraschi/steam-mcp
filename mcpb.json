@@ -1,0 +1,27 @@
+{
+  "name": "steam-mcp",
+  "version": "0.2.0",
+  "type": "server",
+  "runtime": "python",
+  "entry_point": "src/steam_mcp/server.py",
+  "dependencies": [
+    "fastmcp>=3.2.0,<4",
+    "prefab-ui>=0.14.0"
+  ],
+  "build": {
+    "include": [
+      "src/**/*",
+      "README.md",
+      "LICENSE"
+    ],
+    "exclude": [
+      "tests/",
+      ".git/",
+      "webapp/",
+      "__pycache__/"
+    ]
+  },
+  "scripts": {
+    "test": "uv run pytest"
+  }
+}

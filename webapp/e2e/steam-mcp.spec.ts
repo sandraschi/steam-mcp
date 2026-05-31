@@ -21,6 +21,11 @@ test.describe("Frontend", () => {
     await expect(page.locator("text=Tools Overview")).toBeVisible();
   });
 
+  test("Chat page loads", async ({ page }) => {
+    await page.goto("/chat");
+    await expect(page.locator("text=Run tool")).toBeVisible();
+  });
+
   test("Navigation sidebar links work", async ({ page }) => {
     await page.goto("/");
     await page.click("text=Help");

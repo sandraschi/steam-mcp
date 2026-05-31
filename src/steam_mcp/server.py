@@ -1,21 +1,30 @@
 from contextlib import asynccontextmanager
 
+import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from .client import close_client, init_client
+from .config import settings
 from .mcp import tools as _tools  # noqa: F401 — triggers @mcp.tool registration
 from .mcp.registry import mcp
 from .web import setup_webapp
 
+logger = structlog.get_logger("steam-mcp")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await init_client()
+    logger.info("steam_mcp_started", port=settings.backend_port)
     yield
+    await close_client()
+    logger.info("steam_mcp_stopped")
 
 
 _mcp_asgi = mcp.http_app(path="/")
 
-app = FastAPI(title="Steam-MCP", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="Steam-MCP", version="0.2.1", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

@@ -1,33 +1,36 @@
 # Steam-MCP Agent Context
 
 ## Repo
-`steam-mcp` — MCP server for Steam profile, library, stats, store, and Workshop.
+`steam-mcp` — FastMCP 3.2 portmanteau server for Steam profile, library, stats, store, and Workshop.
 
 ## Ports
 - Backend: 11020 (FastAPI + MCP HTTP at /mcp)
 - Frontend: 11021 (Vite dev)
-- Config via `BACKEND_PORT`, `FRONTEND_PORT` env vars
+- Env: `BACKEND_PORT`, `FRONTEND_PORT`
 
 ## Auth
-- `STEAM_API_KEY` env var (get from steamcommunity.com/dev/apikey)
-- `STEAM_ID` env var (your 64-bit Steam ID)
-- Some tools work without auth (store, news, player counts)
+- `STEAM_API_KEY` — profile, library, workshop, wishlist
+- `STEAM_ID` — default account for own profile / library
+- Public: store search, app details, news, player counts
 
-## Package
-- `src/steam_mcp/` — Python package
-- `mcp/registry.py` — shared FastMCP instance
-- `mcp/tools/` — tool implementations (profile, library, stats, store, workshop)
-- `server.py` — FastAPI app + MCP mount, CLI entry
-- `transport.py` — STDIO/HTTP transport selection
+## Portmanteau tools
+- `steam_profile` — own | summaries | friends | resolve_vanity
+- `steam_library` — owned | recent | details | wishlist
+- `steam_stats` — achievements | global_percentages | players | leaderboards
+- `steam_store` — news | search | reviews
+- `steam_workshop` — query | item_details
+- `steam_system` — status | steamcmd_status
+- `steam_help`, `agentic_steam_workflow`, Prefab `show_*` cards
+
+## Layout
+- `src/steam_mcp/services/` — Steam API logic
+- `src/steam_mcp/mcp/tools/` — portmanteau, prefab, prompts, resources, agentic
+- `src/steam_mcp/skills/steam-mcp/SKILL.md` — agent skill
 
 ## Commands
-- `just run` — STDIO mode
-- `just serve` — HTTP SSE + REST on 11020
-- `just frontend-dev` — Vite on 11021
-- `start.ps1` — full stack launcher
+- `just run` — STDIO
+- `just serve` — HTTP + REST
+- `just test` — pytest
+- `start.ps1` / `webapp/start.ps1` — full stack
 
-## Tool Registration
-FastMCP registers tools at import time via @mcp.tool decorator.
-Portmanteau imports in `mcp/tools/__init__.py` must list all tool modules.
-
-Install docs: follow mcp-central-docs/standards/AGENT_INSTALL_REFERENCE.md
+Install docs: mcp-central-docs/standards/AGENT_INSTALL_REFERENCE.md

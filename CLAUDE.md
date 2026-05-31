@@ -1,18 +1,19 @@
 # steam-mcp — Claude Code Guide
 
 ## Overview
-MCP server for Steam — profile, library, stats, store, and Workshop tools
+MCP server for Steam — portmanteau tools on ports 11020/11021.
 
 ## Entry Points
-- `uv run steam-mcp` → `steam_mcp.server:main`
+- `uv run steam-mcp` → stdio
+- `just serve` → FastAPI + `/mcp`
 
 ## Standards
-- FastMCP 3.2+ portmanteau tool pattern — tools use `operation` enum param
-- Responses: structured dicts with `success`, `message`, domain-specific fields
-- Dual transport: stdio (Claude Desktop) + HTTP (`MCP_TRANSPORT=http`)
-- See [mcp-central-docs](https://github.com/sandraschi/mcp-central-docs) for fleet-wide coding standards
+- FastMCP 3.2+ **portmanteau** tools with `operation` enum
+- Markdown in `message` field; structured data in `data`
+- prefab-ui, prompts, resources, agentic sampling (SEP-1577)
+- See mcp-central-docs for fleet standards
 
 ## Key Files
-- `README.md` — full documentation
-- `pyproject.toml` — build config and entry points
-- `AGENTS.md` — OpenAI Codex agent context (if present)
+- `src/steam_mcp/services/` — API layer
+- `src/steam_mcp/mcp/tools/portmanteau.py` — main tools
+- `README.md`, `AGENTS.md`, `skills/steam-mcp/SKILL.md`

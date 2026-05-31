@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync --extra test --extra dev
+
+      - name: Ruff
+        run: uv run ruff check src/ tests/
+
+      - name: Pytest
+        run: uv run pytest tests/ -q
+
+      - name: Ty (non-blocking)
+        continue-on-error: true
+        run: |
+          uv tool install ty || true
+          uv tool run ty check src/ || true

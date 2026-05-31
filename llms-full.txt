@@ -1,0 +1,26 @@
+# steam-mcp — full LLM corpus (v0.2.0)
+
+See README.md for user-facing documentation.
+
+## Portmanteau surface
+
+- steam_profile: own, summaries, friends, resolve_vanity
+- steam_library: owned, recent, details, wishlist
+- steam_stats: achievements, global_percentages, players, leaderboards
+- steam_store: news, search, reviews
+- steam_workshop: query, item_details
+- steam_system: status, steamcmd_status
+- steam_help, agentic_steam_workflow, show_steam_status_card, show_library_card, show_store_search_card
+
+## Auth
+
+STEAM_API_KEY, STEAM_ID, STEAMCMD_PATH, BACKEND_PORT=11020, FRONTEND_PORT=11021
+
+## Skill
+
+src/steam_mcp/skills/steam-mcp/SKILL.md
+
+## Fleet
+
+mcp-central-docs/projects/steam-mcp/README.md
+operations/WEBAPP_PORTS.md ports 11020/11021

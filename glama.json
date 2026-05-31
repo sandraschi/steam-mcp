@@ -1,0 +1,26 @@
+{
+  "name": "steam-mcp",
+  "version": "0.2.0",
+  "description": "FastMCP 3.2 Steam portmanteau server — profile, library, stats, store, workshop",
+  "author": "Sandra Schipal",
+  "license": "MIT",
+  "capabilities": {
+    "tools": [
+      {"name": "steam_profile", "description": "Profile: own, summaries, friends, resolve_vanity"},
+      {"name": "steam_library", "description": "Library: owned, recent, details, wishlist"},
+      {"name": "steam_stats", "description": "Stats: achievements, global_percentages, players, leaderboards"},
+      {"name": "steam_store", "description": "Store: news, search, reviews"},
+      {"name": "steam_workshop", "description": "Workshop: query, item_details"},
+      {"name": "steam_system", "description": "System: status, steamcmd_status"},
+      {"name": "steam_help", "description": "Multi-level help"},
+      {"name": "agentic_steam_workflow", "description": "SEP-1577 agentic sampling workflow"}
+    ]
+  },
+  "environment_variables": [
+    "STEAM_API_KEY",
+    "STEAM_ID",
+    "STEAMCMD_PATH",
+    "BACKEND_PORT",
+    "FRONTEND_PORT"
+  ]
+}

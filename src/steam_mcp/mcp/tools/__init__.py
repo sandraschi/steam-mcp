@@ -1,6 +1,13 @@
 """Portmanteau imports — FastMCP registers tools at import time."""
-from . import library as library
-from . import profile as profile
-from . import stats as stats
-from . import store as store
-from . import workshop as workshop
+
+from . import agentic, portmanteau, prefab, prompts, resources
+from . import help as help_tool
+
+__all__ = [
+    "agentic",
+    "help_tool",
+    "portmanteau",
+    "prefab",
+    "prompts",
+    "resources",
+]

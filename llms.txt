@@ -1,0 +1,16 @@
+# steam-mcp
+> MCP server for Valve Steam — portmanteau tools for profile, library, stats, store, and Workshop. v0.2.0 · ports 11020/11021.
+
+## Docs
+- [Readme](README.md): Quick start, tools, architecture
+- [Changelog](CHANGELOG.md): Version history
+- [Agents](AGENTS.md): Agent context for Codex/Cursor
+- [Skill](src/steam_mcp/skills/steam-mcp/SKILL.md): Workflow skill for MCP hosts
+
+## Configuration
+- [Pyproject](pyproject.toml): Python dependencies (FastMCP 3.2, prefab-ui)
+- [Webapp package](webapp/package.json): React dashboard
+
+## Fleet
+- Ports registered in mcp-central-docs/operations/WEBAPP_PORTS.md (11020/11021)
+- Project doc: mcp-central-docs/projects/steam-mcp/README.md
