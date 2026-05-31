@@ -6,7 +6,6 @@ dist/
 build/
 .venv/
 .uv/
-uv.lock
 
 # IDE
 .idea/
