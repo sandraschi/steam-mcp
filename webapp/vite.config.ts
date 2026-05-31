@@ -9,6 +9,7 @@ export default defineConfig({
     alias: { "@": path.resolve(__dirname, "./src") },
   },
   server: {
+    allowedHosts: ['goliath'],
     port: 11021,
     proxy: {
       "/api": { target: "http://127.0.0.1:11020", changeOrigin: true },
