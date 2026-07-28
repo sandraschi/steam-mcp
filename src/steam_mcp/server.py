@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -43,10 +44,21 @@ async def lifespan(app: FastAPI):
 
 _mcp_asgi = mcp.http_app(path="/")
 
+_STEAM_TAURI = os.environ.get("STEAM_TAURI", "").lower() in ("1", "true", "yes")
+
 app = FastAPI(title="Steam-MCP", version=__version__, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://127.0.0.1:11021",
+        "http://localhost:11021",
+        "http://goliath:11021",
+        "http://tauri.localhost",
+        "https://tauri.localhost",
+        "tauri://localhost",
+    ],
+    allow_origin_regex=r"https?://tauri\.localhost(:\d+)?" if _STEAM_TAURI else None,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )

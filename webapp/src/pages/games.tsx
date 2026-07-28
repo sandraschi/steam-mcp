@@ -1,11 +1,14 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
 import { callTool, getStatus } from "@/lib/api";
 
 export default function Games() {
   const [steamId, setSteamId] = useState("");
   const [searchQuery, setSearchQuery] = useState("Godot");
-  const { data: status } = useQuery({ queryKey: ["status"], queryFn: getStatus });
+  const { data: status } = useQuery({
+    queryKey: ["status"],
+    queryFn: getStatus,
+  });
 
   const library = useMutation({
     mutationFn: () =>
@@ -24,16 +27,19 @@ export default function Games() {
       }),
   });
 
-  const games = (library.data?.data as { games?: { name?: string; appid?: number; playtime_forever?: number }[] })?.games ?? [];
+  const games =
+    (
+      library.data?.data as {
+        games?: { name?: string; appid?: number; playtime_forever?: number }[];
+      }
+    )?.games ?? [];
   const results = (search.data?.data as { results?: { name?: string; appid?: number }[] })?.results ?? [];
 
   return (
     <div className="max-w-4xl space-y-8">
       <h1 className="text-2xl font-bold">Game Library</h1>
 
-      {!status?.has_api_key && (
-        <p className="text-sm text-yellow-400">Set STEAM_API_KEY to load your library.</p>
-      )}
+      {!status?.has_api_key && <p className="text-sm text-yellow-400">Set STEAM_API_KEY to load your library.</p>}
 
       <section className="rounded-lg border border-zinc-800 bg-zinc-900 p-4">
         <h2 className="font-semibold mb-3">Owned games</h2>

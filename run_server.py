@@ -1,5 +1,6 @@
 """Entry point for PyInstaller-bundled steam-mcp backend (Tauri sidecar)."""
 
+import _strptime  # noqa: F401 -- PyInstaller must bundle this eagerly
 import os
 import sys
 
@@ -14,3 +15,4 @@ from steam_mcp.mcp.registry import mcp
 
 if __name__ == "__main__":
     run_server(mcp, "steam-mcp")
+

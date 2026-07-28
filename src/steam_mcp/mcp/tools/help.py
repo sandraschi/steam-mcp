@@ -20,7 +20,7 @@ async def steam_help(
         text = (
             "## Steam-MCP\n\n"
             "Portmanteau tools: `steam_profile`, `steam_library`, `steam_stats`, "
-            "`steam_store`, `steam_workshop`, `steam_system`, `steam_help`, "
+            "`steam_store`, `steam_workshop`, `steam_system`, `steam_publish`, `steam_help`, "
             "`agentic_steam_workflow`.\n\n"
             "Set `STEAM_API_KEY` + `STEAM_ID` for profile/library. "
             "Store player counts work without a key."
@@ -33,7 +33,8 @@ async def steam_help(
             "- **steam_stats:** achievements | global_percentages | players | leaderboards\n"
             "- **steam_store:** news | search | reviews\n"
             "- **steam_workshop:** query | item_details\n"
-            "- **steam_system:** status | steamcmd_status"
+            "- **steam_system:** status | steamcmd_status\n"
+            "- **steam_publish:** status | checklist | monetization | validate_build | generate_vdf | upload"
         )
     else:
         text = (

@@ -12,6 +12,10 @@ class Settings:
     frontend_port: int = field(default_factory=lambda: int(os.getenv("FRONTEND_PORT", "11021")))
     log_level: str = field(default_factory=lambda: os.getenv("LOG_LEVEL", "warning"))
     steamcmd_path: str = field(default_factory=lambda: os.getenv("STEAMCMD_PATH", ""))
+    steam_app_id: int = field(default_factory=lambda: int(os.getenv("STEAM_APP_ID", "0") or "0") or 0)
+    steam_depot_id: int = field(default_factory=lambda: int(os.getenv("STEAM_DEPOT_ID", "0") or "0") or 0)
+    steam_username: str = field(default_factory=lambda: os.getenv("STEAM_USERNAME", ""))
+    fleet_exchange_root: str = field(default_factory=lambda: os.getenv("FLEET_EXCHANGE_ROOT", ""))
     prefab_apps: bool = field(
         default_factory=lambda: os.getenv("STEAM_PREFAB_APPS", "1").strip().lower() not in ("0", "false", "no")
     )

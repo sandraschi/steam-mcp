@@ -1,3 +1,7 @@
+set windows-shell := ["powershell.exe", "-NoProfile", "-Command"]
+
+import 'scripts/just/fleet.just'
+
 default:
     @just --list
 
@@ -25,14 +29,11 @@ test:
 smoke:
     uv run python scripts/smoke_test.py
 
-mcpb-pack:
-    uv run python build_mcpb.py
-
 llms-full:
     uv run python scripts/generate_llms_full.py
 
 install-mcp CLIENT="print":
-    pwsh -NoLogo -File install-mcp.ps1 {{CLIENT}}
+    powershell.exe -NoProfile -File install-mcp.ps1 {{CLIENT}}
 
 frontend-install:
     cd webapp; npm install
@@ -44,10 +45,10 @@ frontend-build:
     cd webapp; npm run build
 
 native-sidecar:
-    pwsh -NoLogo -File native/build-sidecar.ps1
+    powershell.exe -NoProfile -File native/build-sidecar.ps1
 
 native-build:
-    pwsh -NoLogo -File native/build.ps1
+    powershell.exe -NoProfile -File native/build.ps1
 
 native-dev:
     cd native; npm install; npm run dev

@@ -2,14 +2,30 @@ import { useQuery } from "@tanstack/react-query";
 import { callTool, getStatus } from "@/lib/api";
 
 export default function Profile() {
-  const { data: status } = useQuery({ queryKey: ["status"], queryFn: getStatus });
-  const { data: profile, refetch, isFetching, error } = useQuery({
+  const { data: status } = useQuery({
+    queryKey: ["status"],
+    queryFn: getStatus,
+  });
+  const {
+    data: profile,
+    refetch,
+    isFetching,
+    error,
+  } = useQuery({
     queryKey: ["profile"],
     queryFn: () => callTool("steam_profile", { operation: "own" }),
     enabled: false,
   });
 
-  const player = (profile?.data as { players?: { personaname?: string; steamid?: string; profileurl?: string }[] })?.players?.[0];
+  const player = (
+    profile?.data as {
+      players?: {
+        personaname?: string;
+        steamid?: string;
+        profileurl?: string;
+      }[];
+    }
+  )?.players?.[0];
 
   return (
     <div className="max-w-2xl">
@@ -27,9 +43,7 @@ export default function Profile() {
           {isFetching ? "Loading…" : "Load my profile"}
         </button>
         {error && <p className="text-red-400 text-sm">{String(error)}</p>}
-        {profile && !profile.success && (
-          <p className="text-red-400 text-sm">{profile.message}</p>
-        )}
+        {profile && !profile.success && <p className="text-red-400 text-sm">{profile.message}</p>}
         {player && (
           <div className="text-sm text-zinc-300">
             <p className="text-lg font-semibold text-white">{player.personaname}</p>

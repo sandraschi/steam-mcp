@@ -5,6 +5,7 @@ const links = [
   { to: "/chat", label: "Chat", icon: "💬" },
   { to: "/games", label: "Games", icon: "🎮" },
   { to: "/profile", label: "Profile", icon: "👤" },
+  { to: "/logs", label: "Logs", icon: "📋" },
   { to: "/settings", label: "Settings", icon: "⚙" },
   { to: "/help", label: "Help", icon: "?" },
 ];
@@ -18,9 +19,7 @@ export default function Sidebar() {
           to={link.to}
           className={({ isActive }) =>
             `flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
-              isActive
-                ? "bg-blue-600 text-white"
-                : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+              isActive ? "bg-blue-600 text-white" : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
             }`
           }
           end={link.to === "/"}

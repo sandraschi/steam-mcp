@@ -80,7 +80,31 @@ async def test_store_search_no_key(client):
 
 
 @pytest.mark.asyncio
-async def test_player_count(client):
+async def test_steam_publish_status(client):
+    r = await client.post(
+        "/api/tools/steam_publish/call",
+        json={"arguments": {"operation": "status"}},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body["success"] is True
+    inner = body["data"]
+    assert inner.get("success") is True
+
+
+@pytest.mark.asyncio
+async def test_steam_publish_checklist(client):
+    r = await client.post(
+        "/api/tools/steam_publish/call",
+        json={"arguments": {"operation": "checklist"}},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body["success"] is True
+    inner = body["data"]
+    assert inner.get("success") is True
+    assert "ready_for_upload" in inner
+
     r = await client.post(
         "/api/tools/steam_stats/call",
         json={"arguments": {"operation": "players", "app_id": 440}},

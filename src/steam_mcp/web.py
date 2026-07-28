@@ -9,6 +9,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 from . import __version__
+from .activity_log import ActivityLog, create_log_router
 from .ai import ollama_available
 from .chat import get_ai_router, handle_chat_query
 from .config import settings
@@ -18,10 +19,30 @@ from .mcp.registry import mcp
 
 def setup_webapp(app: FastAPI) -> None:
     ai_router = get_ai_router()
+    mcp_log = ActivityLog()
+    app.include_router(create_log_router(mcp_log), prefix="/api")
 
     @app.get("/health")
     async def health():
         return {"status": "ok", "version": __version__}
+
+    @app.get("/api/v1/diagnostics")
+    async def diagnostics():
+        try:
+            import psutil
+
+            cpu = psutil.cpu_percent()
+            mem = psutil.virtual_memory().percent
+            disk = psutil.disk_usage("/").percent
+        except ImportError:
+            cpu = mem = disk = None
+        return {
+            "success": True,
+            "backend": {"port": settings.backend_port, "status": "running"},
+            "system": {"cpu_percent": cpu, "memory_percent": mem, "disk_percent": disk},
+            "tools": {"total": 0},
+            "cua_status": {"tesseract_available": False, "window_found": False},
+        }
 
     @app.get("/api/status")
     async def api_status():

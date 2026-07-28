@@ -26,7 +26,7 @@ class SteamAIRouter:
 
     _SYSTEM = (
         "You are Steam-MCP assistant. Reply with ONE JSON object only — no markdown fences.\n"
-        "Schema: {\"tool\": \"steam_store\", \"arguments\": {\"operation\": \"search\", \"query\": \"Godot\"}}\n"
+        'Schema: {"tool": "steam_store", "arguments": {"operation": "search", "query": "Godot"}}\n'
         "Tools and operations:\n"
         "- steam_profile: own, summaries, friends, resolve_vanity\n"
         "- steam_library: owned, recent, details, wishlist\n"
@@ -79,10 +79,7 @@ class SteamAIRouter:
                     return r.json()["choices"][0]["message"]["content"]
                 return f"LLM error {r.status_code}: {r.text[:300]}"
             except httpx.ConnectError:
-                return (
-                    f"LLM not reachable at {endpoint}. "
-                    "Start Ollama or set AI_ENDPOINT / STEAM_CHAT_MODE=rules."
-                )
+                return f"LLM not reachable at {endpoint}. Start Ollama or set AI_ENDPOINT / STEAM_CHAT_MODE=rules."
             except Exception as exc:
                 return f"LLM error: {exc}"
 

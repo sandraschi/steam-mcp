@@ -2,7 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { callTool, getStatus } from "@/lib/api";
 
 export default function Dashboard() {
-  const { data: status } = useQuery({ queryKey: ["status"], queryFn: getStatus });
+  const { data: status } = useQuery({
+    queryKey: ["status"],
+    queryFn: getStatus,
+  });
   const { data: tf2 } = useQuery({
     queryKey: ["players-440"],
     queryFn: () => callTool("steam_stats", { operation: "players", app_id: 440 }),
@@ -46,12 +49,24 @@ export default function Dashboard() {
         </p>
         <div className="grid grid-cols-2 gap-3 text-sm">
           {[
-            { cat: "Profile", tools: "steam_profile → own, summaries, friends, resolve_vanity" },
-            { cat: "Library", tools: "steam_library → owned, recent, details, wishlist" },
-            { cat: "Stats", tools: "steam_stats → achievements, global_percentages, players, leaderboards" },
+            {
+              cat: "Profile",
+              tools: "steam_profile → own, summaries, friends, resolve_vanity",
+            },
+            {
+              cat: "Library",
+              tools: "steam_library → owned, recent, details, wishlist",
+            },
+            {
+              cat: "Stats",
+              tools: "steam_stats → achievements, global_percentages, players, leaderboards",
+            },
             { cat: "Store", tools: "steam_store → news, search, reviews" },
             { cat: "Workshop", tools: "steam_workshop → query, item_details" },
-            { cat: "System", tools: "steam_system, steam_help, agentic_steam_workflow, Prefab cards" },
+            {
+              cat: "System",
+              tools: "steam_system, steam_help, agentic_steam_workflow, Prefab cards",
+            },
           ].map((group) => (
             <div key={group.cat} className="rounded border border-zinc-800 p-3">
               <p className="text-blue-400 font-medium mb-1">{group.cat}</p>

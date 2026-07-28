@@ -115,6 +115,14 @@ async def handle_rule_query(query: str) -> dict[str, str]:
         text = await _call("steam_system", {"operation": "steamcmd_status"})
         return {"response": text, "tool": "steam_system", "mode": "rules"}
 
+    if any(k in lowered for k in ("publish status", "publishing config", "publish checklist")):
+        text = await _call("steam_publish", {"operation": "checklist"})
+        return {"response": text, "tool": "steam_publish", "mode": "rules"}
+
+    if "publish" in lowered or "upload" in lowered:
+        text = await _call("steam_publish", {"operation": "status"})
+        return {"response": text, "tool": "steam_publish", "mode": "rules"}
+
     if "help" in lowered:
         text = await _call("steam_help", {"level": "full"})
         return {"response": text, "tool": "steam_help", "mode": "rules"}

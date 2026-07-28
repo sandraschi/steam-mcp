@@ -1,5 +1,5 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { callTool, getStatus, apiGet, apiPost } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { apiGet, apiPost, callTool, getStatus } from "@/lib/api";
 
 interface LlmModelsResponse {
   providers: Array<{
@@ -9,15 +9,31 @@ interface LlmModelsResponse {
     available: boolean;
     models: string[];
   }>;
-  active: { provider: string; endpoint: string; model: string; chat_mode: string };
+  active: {
+    provider: string;
+    endpoint: string;
+    model: string;
+    chat_mode: string;
+  };
 }
 
 export default function Settings() {
-  const { data: status, refetch } = useQuery({ queryKey: ["status"], queryFn: getStatus });
-  const { data: llm } = useQuery({ queryKey: ["llm-models"], queryFn: () => apiGet<LlmModelsResponse>("/llm/models") });
+  const { data: status, refetch } = useQuery({
+    queryKey: ["status"],
+    queryFn: getStatus,
+  });
+  const { data: llm } = useQuery({
+    queryKey: ["llm-models"],
+    queryFn: () => apiGet<LlmModelsResponse>("/llm/models"),
+  });
 
   const testPublic = useMutation({
-    mutationFn: () => callTool("steam_store", { operation: "search", query: "Portal", count: 3 }),
+    mutationFn: () =>
+      callTool("steam_store", {
+        operation: "search",
+        query: "Portal",
+        count: 3,
+      }),
   });
 
   const testSystem = useMutation({

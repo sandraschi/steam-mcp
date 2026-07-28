@@ -1,4 +1,5 @@
 target/
 binaries/
+resources/
 node_modules/
 Cargo.lock

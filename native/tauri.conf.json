@@ -2,14 +2,16 @@
   "productName": "Steam MCP",
   "version": "0.3.1",
   "identifier": "ai.fleet.steam-mcp",
-  "build": {
-    "frontendDist": "../webapp/dist",
-    "devUrl": "http://localhost:11021",
-    "beforeDevCommand": "npm --prefix ../webapp run dev"
-  },
+    "build": {
+        "frontendDist": "../webapp/dist",
+        "devUrl": "http://localhost:11021",
+        "beforeDevCommand": "npm --prefix ../webapp run dev",
+        "beforeBuildCommand": "pwsh -NoProfile -Command \"$env:VITE_API_BASE='http://127.0.0.1:11020'; npm --prefix ../webapp run build\""
+    },
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "Steam MCP",
         "width": 1200,
         "height": 800,
@@ -18,7 +20,7 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; connect-src 'self' http://127.0.0.1:11020 ipc: http://ipc.localhost; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'"
     }
   },
   "bundle": {
@@ -31,7 +33,15 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "externalBin": ["binaries/steam-mcp-backend"]
+    "resources": ["resources/steam-mcp-backend.exe",
+            "resources/.env.example"],
+    "windows": {
+      "webviewInstallMode": { "type": "skip" },
+      "nsis": {
+        "installMode": "currentUser",
+        "installerHooks": "./windows/hooks.nsh"
+}
+    }
   },
   "plugins": {
     "shell": { "open": true },
@@ -39,3 +49,6 @@
     "process": { "all": true }
   }
 }
+
+
+

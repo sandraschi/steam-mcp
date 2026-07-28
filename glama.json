@@ -1,44 +1,45 @@
-{
-  "name": "steam-mcp",
-  "version": "0.3.1",
-  "description": "FastMCP 3.2 Steam portmanteau server — profile, library, stats, store, workshop",
-  "author": "Sandra Schipal",
-  "license": "MIT",
-  "homepage": "https://github.com/sandraschi/steam-mcp",
-  "capabilities": {
-    "tools": { "enabled": true },
-    "prompts": { "enabled": true },
-    "resources": { "enabled": true }
-  },
-  "tools": [
-    {"name": "steam_profile", "description": "Profile: own, summaries, friends, resolve_vanity"},
-    {"name": "steam_library", "description": "Library: owned, recent, details, wishlist"},
-    {"name": "steam_stats", "description": "Stats: achievements, global_percentages, players, leaderboards"},
-    {"name": "steam_store", "description": "Store: news, search, reviews"},
-    {"name": "steam_workshop", "description": "Workshop: query, item_details"},
-    {"name": "steam_system", "description": "System: status, steamcmd_status"},
-    {"name": "steam_help", "description": "Multi-level help"},
-    {"name": "agentic_steam_workflow", "description": "SEP-1577 agentic sampling workflow"},
-    {"name": "show_steam_status_card", "description": "Prefab status card"},
-    {"name": "show_library_card", "description": "Prefab library card"},
-    {"name": "show_store_search_card", "description": "Prefab store search card"},
-    {"name": "show_workshop_card", "description": "Prefab workshop card"},
-    {"name": "show_player_count_card", "description": "Prefab player count card"}
-  ],
-  "environment_variables": [
-    "STEAM_API_KEY",
-    "STEAM_ID",
-    "STEAMCMD_PATH",
-    "BACKEND_PORT",
-    "FRONTEND_PORT",
-    "STEAM_CHAT_MODE",
-    "STEAM_PREFAB_APPS",
-    "AI_ENDPOINT",
-    "AI_MODEL"
-  ],
-  "discovery": {
-    "well_known": "http://127.0.0.1:11020/.well-known/mcp/manifest.json",
-    "capabilities": "http://127.0.0.1:11020/api/capabilities",
-    "mcp_http": "http://127.0.0.1:11020/mcp"
-  }
-}
+{
+  "name": "steam-mcp",
+  "version": "0.3.2",
+  "description": "FastMCP 3.2 Steam portmanteau server — profile, library, stats, store, workshop, and publishing tools with React dashboard and Prefab UI cards",
+  "author": "Sandra Schipal",
+  "license": "MIT",
+  "homepage": "https://github.com/sandraschi/steam-mcp",
+  "capabilities": {
+    "tools": { "enabled": true },
+    "prompts": { "enabled": true },
+    "resources": { "enabled": true }
+  },
+  "tools": [
+    {"name": "steam_profile", "description": "Query Steam player profiles: own profile, player summaries, friend list, and vanity URL resolution. Requires STEAM_API_KEY."},
+    {"name": "steam_library", "description": "Access your Steam game library: owned games with playtime, recently played titles, app store details, and wishlist. Requires STEAM_API_KEY."},
+    {"name": "steam_stats", "description": "Game stats: per-player achievements, global achievement rarity percentages, concurrent player counts (no key needed), and leaderboards."},
+    {"name": "steam_store", "description": "Steam store search, latest news for any app, and user reviews with scores. No API key required."},
+    {"name": "steam_workshop", "description": "Browse Workshop mods and community content by game with popularity sorting. Requires STEAM_API_KEY."},
+    {"name": "steam_system", "description": "Server health, tool registration status, and SteamCMD binary detection for publishing workflows."},
+    {"name": "steam_publish", "description": "Steamworks publishing pipeline: readiness checklist, monetization guide, VDF generation, and SteamPipe upload orchestration with dry-run support."},
+    {"name": "steam_help", "description": "Multi-level help for all Steam-MCP tools, operations, and auth requirements."},
+    {"name": "agentic_steam_workflow", "description": "Multi-step Steam queries via host LLM sampling (SEP-1577): describe a goal in natural language and the agent chains tools to answer."},
+    {"name": "show_steam_status_card", "description": "Prefab UI card showing Steam-MCP connectivity and auth status at a glance."},
+    {"name": "show_library_card", "description": "Prefab UI card summarizing owned games with playtime data."},
+    {"name": "show_store_search_card", "description": "Prefab UI card displaying Steam store search results."},
+    {"name": "show_workshop_card", "description": "Prefab UI card browsing Workshop items for a game."},
+    {"name": "show_player_count_card", "description": "Prefab UI card showing current in-game player count."}
+  ],
+  "environment_variables": [
+    "STEAM_API_KEY",
+    "STEAM_ID",
+    "STEAMCMD_PATH",
+    "BACKEND_PORT",
+    "FRONTEND_PORT",
+    "STEAM_CHAT_MODE",
+    "STEAM_PREFAB_APPS",
+    "AI_ENDPOINT",
+    "AI_MODEL"
+  ],
+  "discovery": {
+    "well_known": "/.well-known/mcp/manifest.json",
+    "capabilities": "/api/capabilities",
+    "mcp_http": "/mcp"
+  }
+}

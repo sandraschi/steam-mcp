@@ -3,6 +3,7 @@ import AppLayout from "@/components/layout/AppLayout";
 import Chat from "@/pages/chat";
 import Dashboard from "@/pages/dashboard";
 import Games from "@/pages/games";
+import Logs from "@/pages/logs";
 import Profile from "@/pages/profile";
 import Settings from "@/pages/settings";
 import Help from "@/pages/help";
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/chat" element={<Chat />} />
         <Route path="/games" element={<Games />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/logs" element={<Logs />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/help" element={<Help />} />
       </Route>

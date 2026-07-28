@@ -1,3 +1,4 @@
+export const API_BASE = "http://127.0.0.1:11021";
 const API_ROOT = (import.meta.env.VITE_API_BASE as string | undefined)?.replace(/\/$/, "") ?? "";
 const BASE = `${API_ROOT}/api`;
 

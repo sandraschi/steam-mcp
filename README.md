@@ -2,7 +2,7 @@
   <img src="https://img.shields.io/badge/python-3.12+-blue?logo=python" alt="Python">
   <img src="https://img.shields.io/badge/fastmcp-3.2+-purple" alt="FastMCP">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
-  <img src="https://img.shields.io/badge/version-0.3.1-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-0.3.2-blue" alt="Version">
 </p>
 
 <p align="center">
@@ -13,139 +13,69 @@
 
 # Steam-MCP
 
-**FastMCP 3.2 portmanteau server for Valve Steam** — profile, library, stats, store, Workshop, SteamCMD status. React dashboard with hybrid Ollama chat, Prefab cards, fleet discovery (`/.well-known/mcp/manifest.json`), MCPB bundle, and Tauri native shell.
+FastMCP 3.2 portmanteau server for Valve Steam — profile, library, stats, store, Workshop, and Steamworks publishing. React dashboard with hybrid AI chat, Prefab UI cards, fleet discovery, and Tauri native shell.
 
----
-
-## Fleet SOTA (v0.3.1)
-
-| Item | Status |
-|------|--------|
-| Portmanteau + Prefab + agentic | ✅ |
-| `manifest.json` + `just mcpb-pack` | ✅ |
-| `assets/prompts/` (MCPB 3-4-100) | ✅ |
-| `install-mcp.ps1` | ✅ |
-| `/.well-known/mcp/manifest.json` | ✅ |
-| `GET /api/capabilities` | ✅ |
-| `llms.txt` + generated `llms-full.txt` | ✅ |
-| Tauri scaffold + release CI | ✅ |
-
----
-
-## Portmanteau tools
-
-| Tool | Operations |
-|------|------------|
-| `steam_profile` | `own`, `summaries`, `friends`, `resolve_vanity` |
-| `steam_library` | `owned`, `recent`, `details`, `wishlist` |
-| `steam_stats` | `achievements`, `global_percentages`, `players`, `leaderboards` |
-| `steam_store` | `news`, `search`, `reviews` |
-| `steam_workshop` | `query`, `item_details` |
-| `steam_system` | `status`, `steamcmd_status` |
-
-Also: `steam_help`, `agentic_steam_workflow`, Prefab `show_*` cards.
-
-No API key: store search, app details, news, player counts, global achievement %.
-
----
-
-## Quick start
+## Quick Install
 
 ```powershell
 git clone https://github.com/sandraschi/steam-mcp.git
 cd steam-mcp
 uv sync
-
-$env:STEAM_API_KEY = "your-key"   # https://steamcommunity.com/dev/apikey
+$env:STEAM_API_KEY = "your-key"   # steamcommunity.com/dev/apikey
 $env:STEAM_ID = "7656119xxxxxxxxxx"
-
 just serve              # backend :11020
-.\start.ps1             # backend + frontend :11021
 ```
 
-MCP: `http://localhost:11020/mcp` · REST: `/api/status`, `/api/capabilities`, `/api/tools/{name}/call`
-
-Discovery: `http://localhost:11020/.well-known/mcp/manifest.json`
-
-Install MCP client: `.\install-mcp.ps1 print` · MCPB: `just mcpb-pack`
-
----
-
-## MCP client config
+MCP HTTP: `http://localhost:11020/mcp` — add to Claude Desktop config:
 
 ```json
 {
   "mcpServers": {
     "steam": {
       "command": "uv",
-      "args": ["--directory", "D:/Dev/repos/steam-mcp", "run", "steam-mcp"],
-      "env": {
-        "STEAM_API_KEY": "...",
-        "STEAM_ID": "..."
-      }
+      "args": ["--directory", "path/to/steam-mcp", "run", "steam-mcp"],
+      "env": { "STEAM_API_KEY": "...", "STEAM_ID": "..." }
     }
   }
 }
 ```
 
-HTTP:
+Full install reference: [INSTALL.md](INSTALL.md) (also see [AGENT_INSTALL_REFERENCE.md](https://github.com/sandraschi/mcp-central-docs/blob/main/standards/AGENT_INSTALL_REFERENCE.md) in fleet standards).
 
-```json
-{
-  "mcpServers": {
-    "steam": { "url": "http://localhost:11020/mcp" }
-  }
-}
-```
+## What You Can Do
 
----
+- *"Search for Godot games on Steam"*
+- *"How many players are in Team Fortress 2 right now?"*
+- *"Show my game library with playtime"*
+- *"What are the latest updates for Cyberpunk 2077?"*
 
-## Example calls
+## Documentation
 
-```json
-{"operation": "search", "query": "Godot", "count": 5}
-```
-→ `steam_store`
+| Doc | Contents |
+|-----|----------|
+| [Installation](INSTALL.md) | All install methods, prerequisites |
+| [Configuration](docs/CONFIGURATION.md) | Environment variables, Steam auth |
+| [Tool Reference](docs/TOOLS.md) | All portmanteau tools and operations |
+| [Steam Publishing](https://github.com/sandraschi/mcp-central-docs/blob/main/docs/gamedev/STEAM_PUBLISHING.md) | Steamworks setup, Direct fee, credentials |
+| [Development](docs/DEVELOPMENT.md) | Contributing, local setup, standards |
+| [Troubleshooting](docs/TROUBLESHOOTING.md) | Common issues and fixes |
+| [Fleet Project Page](https://github.com/sandraschi/mcp-central-docs/blob/main/projects/steam-mcp/README.md) | Central docs overview |
 
-```json
-{"operation": "players", "app_id": 440}
-```
-→ `steam_stats` (no key)
+## Cross-Fleet Pipeline
 
-```json
-{"operation": "owned"}
-```
-→ `steam_library` (key + STEAM_ID)
-
----
-
-## Architecture
+Steam-MCP is the publishing backend for **godot-mcp** — the fleet's Godot game builder. Export Windows builds from Godot, stage them in the fleet exchange, and upload via SteamPipe:
 
 ```
-src/steam_mcp/
-  services/          # Steam API logic (shared httpx client)
-  mcp/tools/         # portmanteau, prefab, prompts, resources, agentic
-  skills/steam-mcp/  # MCP skill for hosts
-  server.py          # FastAPI + /mcp mount
-  web.py             # REST bridge
-webapp/              # Vite React dashboard (Chat tool console)
+godot-mcp (export + stage) → steam-mcp (VDF + steamcmd upload)
 ```
 
----
+See [godot-mcp Ship to Steam](https://github.com/sandraschi/godot-mcp/blob/main/docs/ship-to-steam.md) and [STEAM_PUBLISHING.md](https://github.com/sandraschi/mcp-central-docs/blob/main/docs/gamedev/STEAM_PUBLISHING.md) in mcp-central-docs.
 
-## Development
+## Requirements
 
-```powershell
-just install
-just test
-just smoke
-just lint
-just e2e
-```
-
-Fleet doc: `mcp-central-docs/projects/steam-mcp/README.md`
-
----
+- Python 3.12+ and [uv](https://docs.astral.sh/uv/)
+- Steam Web API key for profile/library/workshop tools
+- SteamCMD for publishing operations (optional)
 
 ## License
 

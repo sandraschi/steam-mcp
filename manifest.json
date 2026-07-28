@@ -60,6 +60,7 @@
     {"name": "steam_store", "description": "Store: news, search, reviews"},
     {"name": "steam_workshop", "description": "Workshop: query, item_details"},
     {"name": "steam_system", "description": "System: status, steamcmd_status"},
+    {"name": "steam_publish", "description": "Publishing: status, checklist, monetization, validate, VDF, upload"},
     {"name": "steam_help", "description": "Help and operation reference"},
     {"name": "agentic_steam_workflow", "description": "Multi-step Steam workflow via MCP sampling"},
     {"name": "show_steam_status_card", "description": "Prefab card: connectivity and auth status"},

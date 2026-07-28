@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import httpx
 
+from . import __version__
+
 _client: httpx.AsyncClient | None = None
 
 
@@ -12,7 +14,7 @@ async def init_client() -> None:
     if _client is None:
         _client = httpx.AsyncClient(
             timeout=30.0,
-            headers={"User-Agent": "steam-mcp/0.2.0"},
+            headers={"User-Agent": f"steam-mcp/{__version__}"},
             follow_redirects=True,
         )
 

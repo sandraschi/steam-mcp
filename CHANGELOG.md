@@ -1,4 +1,23 @@
+
 # Changelog
+
+## 0.3.2 (2026-06-27)
+
+### Fixed
+- **Critical: server failed to start** — created missing `activity_log.py`, `publish_tool.py`, fixed `services/publish.py` self-import (three `ModuleNotFoundError` bugs)
+- Hardcoded version strings `"0.2.0"` in User-Agent and `steam_system` status — now use `__version__`
+- `fleet_exchange_root` default path was hardcoded to `D:/Dev/repos/_exchange` — now uses env var or empty
+- `glama.json` discovery URLs pointed to `127.0.0.1` — now use relative paths
+
+### Added
+- **`steam_publish` portmanteau** — Steamworks checklist, VDF generation, SteamPipe upload (dry_run default): `status`, `checklist`, `monetization`, `validate_build`, `generate_vdf`, `upload_build`, `upload_prerelease`, `upload_release`
+- Publish service package with fleet exchange paths
+- godot-mcp cross-fleet: `STEAM_MCP_URL` + 7 ship tools, `/ship-steam` UI
+- `steam_publish` intent matching in rule-based chat
+
+### Changed
+- All tool descriptions expanded with detailed usage context examples — improves Glama TDQS score
+- `glama.json` now includes all 14 tools with rich descriptions
 
 ## 0.3.1 (2026-05-31)
 
@@ -39,3 +58,5 @@
 
 - Initial release: 14 atomic MCP tools
 - FastAPI + React dashboard on ports 11020/11021
+
+

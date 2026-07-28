@@ -6,7 +6,8 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field
 
-from ...services import library, profile, publish, stats, store, workshop
+from ... import __version__ as _server_version
+from ...services import library, profile, stats, store, workshop
 from ..registry import TOOL_VERSION, mcp
 
 ProfileOp = Literal["own", "summaries", "friends", "resolve_vanity"]
@@ -19,13 +20,17 @@ SystemOp = Literal["status", "steamcmd_status"]
 
 @mcp.tool(version=TOOL_VERSION)
 async def steam_profile(
-    operation: Annotated[ProfileOp, Field(description="Profile operation to run.")],
-    steamid: Annotated[str, Field(description="64-bit Steam ID when required.")] = "",
-    steamids: Annotated[str, Field(description="Comma-separated Steam IDs for summaries.")] = "",
-    vanity_url: Annotated[str, Field(description="Vanity URL slug for resolve_vanity.")] = "",
-    relationship: Annotated[str, Field(description="Friend filter: all or friend.")] = "all",
+    operation: Annotated[
+        ProfileOp, Field(description="Profile operation: own, summaries, friends, or resolve_vanity.")
+    ],
+    steamid: Annotated[str, Field(description="64-bit Steam ID required for friends.")] = "",
+    steamids: Annotated[str, Field(description="Comma-separated Steam IDs for summaries (up to 100).")] = "",
+    vanity_url: Annotated[
+        str, Field(description="Vanity URL slug, e.g. 'sandraschi' from steamcommunity.com/id/sandraschi.")
+    ] = "",
+    relationship: Annotated[str, Field(description="Friend filter: 'all' or 'friend'.")] = "all",
 ) -> dict[str, Any]:
-    """Steam profile tools: own profile, player summaries, friends, vanity URL resolution."""
+    """Query player profiles: own profile, summaries, friend list, vanity URL resolution. Requires STEAM_API_KEY."""
     if operation == "own":
         return await profile.get_own_profile()
     if operation == "summaries":
@@ -46,14 +51,14 @@ async def steam_profile(
 
 @mcp.tool(version=TOOL_VERSION)
 async def steam_library(
-    operation: Annotated[LibraryOp, Field(description="Library operation to run.")],
-    steamid: Annotated[str, Field(description="64-bit Steam ID (defaults to STEAM_ID).")] = "",
-    app_id: Annotated[int, Field(description="Steam App ID for details.")] = 0,
-    include_free: Annotated[bool, Field(description="Include free games in owned.")] = False,
+    operation: Annotated[LibraryOp, Field(description="Library operation: owned, recent, details, or wishlist.")],
+    steamid: Annotated[str, Field(description="64-bit Steam ID; defaults to STEAM_ID.")] = "",
+    app_id: Annotated[int, Field(description="Steam App ID, required for details.")] = 0,
+    include_free: Annotated[bool, Field(description="Include free games in owned results.")] = False,
     count: Annotated[int, Field(description="Max items for recent.", ge=1, le=50)] = 10,
-    country: Annotated[str, Field(description="Country code for store details.")] = "US",
+    country: Annotated[str, Field(description="Country code for pricing, e.g. US, DE, GB.")] = "US",
 ) -> dict[str, Any]:
-    """Steam library tools: owned games, recently played, store details, wishlist."""
+    """Access library: owned games, recently played, store details, wishlist. Requires API key and Steam ID."""
     if operation == "owned":
         return await library.get_owned_games(steamid, include_free)
     if operation == "recent":
@@ -69,11 +74,13 @@ async def steam_library(
 
 @mcp.tool(version=TOOL_VERSION)
 async def steam_stats(
-    operation: Annotated[StatsOp, Field(description="Stats operation to run.")],
-    steamid: Annotated[str, Field(description="64-bit Steam ID for player achievements.")] = "",
-    app_id: Annotated[int, Field(description="Steam App ID.")] = 0,
+    operation: Annotated[
+        StatsOp, Field(description="Stats operation: achievements, global_percentages, players, or leaderboards.")
+    ],
+    steamid: Annotated[str, Field(description="64-bit Steam ID, required for achievements.")] = "",
+    app_id: Annotated[int, Field(description="Steam App ID, required for all operations.")] = 0,
 ) -> dict[str, Any]:
-    """Steam stats: player achievements, global percentages, concurrent players, leaderboards."""
+    """Stats: achievements, global rarity, concurrent players, leaderboards. Player count and global % need no key."""
     if operation == "achievements":
         if not steamid or not app_id:
             return {"success": False, "message": "steamid and app_id required", "data": None}
@@ -95,12 +102,12 @@ async def steam_stats(
 
 @mcp.tool(version=TOOL_VERSION)
 async def steam_store(
-    operation: Annotated[StoreOp, Field(description="Store operation to run.")],
-    app_id: Annotated[int, Field(description="Steam App ID for news/reviews.")] = 0,
-    query: Annotated[str, Field(description="Search query for search operation.")] = "",
+    operation: Annotated[StoreOp, Field(description="Store operation: news, search, or reviews.")],
+    app_id: Annotated[int, Field(description="Steam App ID, required for news and reviews.")] = 0,
+    query: Annotated[str, Field(description="Search query, e.g. 'Godot', 'Half-Life'.")] = "",
     count: Annotated[int, Field(description="Max results.", ge=1, le=50)] = 10,
 ) -> dict[str, Any]:
-    """Steam store: news, search, user reviews."""
+    """Search the Steam store, read latest news, or fetch user reviews with scores. No STEAM_API_KEY required."""
     if operation == "news":
         if not app_id:
             return {"success": False, "message": "app_id required for news", "data": None}
@@ -118,17 +125,17 @@ async def steam_store(
 
 @mcp.tool(version=TOOL_VERSION)
 async def steam_workshop(
-    operation: Annotated[WorkshopOp, Field(description="Workshop operation to run.")],
-    app_id: Annotated[int, Field(description="Steam App ID for query.")] = 0,
+    operation: Annotated[WorkshopOp, Field(description="Workshop operation: query or item_details.")],
+    app_id: Annotated[int, Field(description="Steam App ID for query, e.g. 440 (TF2).")] = 0,
     query: Annotated[str, Field(description="Workshop search text.")] = "",
     count: Annotated[int, Field(description="Max items.", ge=1, le=100)] = 20,
     sort_by: Annotated[
         str,
         Field(description="Sort: mostrecent, score, trend, mostsubscribed, mostfavorited."),
     ] = "mostsubscribed",
-    published_file_ids: Annotated[str, Field(description="Comma-separated IDs for item_details.")] = "",
+    published_file_ids: Annotated[str, Field(description="Comma-separated file IDs for item_details.")] = "",
 ) -> dict[str, Any]:
-    """Steam Workshop: query items or fetch published file details."""
+    """Browse Workshop mods by game with popularity sorting, or fetch published file details. Requires STEAM_API_KEY."""
     if operation == "query":
         if not app_id:
             return {"success": False, "message": "app_id required for query", "data": None}
@@ -140,9 +147,9 @@ async def steam_workshop(
 
 @mcp.tool(version=TOOL_VERSION)
 async def steam_system(
-    operation: Annotated[SystemOp, Field(description="System operation: status or steamcmd_status.")],
+    operation: Annotated[SystemOp, Field(description="System operation: status (server health) or steamcmd_status.")],
 ) -> dict[str, Any]:
-    """Steam-MCP system status and SteamCMD configuration check."""
+    """Check server health (API key, Steam ID, tool count) and SteamCMD binary detection for publishing."""
     from ...config import settings
     from ..registry import mcp as mcp_instance
 
@@ -158,9 +165,11 @@ async def steam_system(
                 "has_api_key": settings.has_api_key,
                 "has_steam_id": settings.has_steam_id,
                 "tool_count": len(tools),
-                "version": "0.2.0",
+                "version": _server_version,
             },
         }
     if operation == "steamcmd_status":
-        return await publish.steamcmd_status()
+        from ...services.publish import steamcmd_status
+
+        return await steamcmd_status()
     return {"success": False, "message": f"Unknown operation: {operation}", "data": None}

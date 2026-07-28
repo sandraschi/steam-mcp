@@ -1,6 +1,6 @@
 """Portmanteau imports — FastMCP registers tools at import time."""
 
-from . import agentic, portmanteau, prefab, prompts, resources
+from . import agentic, portmanteau, prefab, prompts, publish_tool, resources
 from . import help as help_tool
 
 __all__ = [
@@ -9,5 +9,6 @@ __all__ = [
     "portmanteau",
     "prefab",
     "prompts",
+    "publish_tool",
     "resources",
 ]

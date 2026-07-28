@@ -1,59 +1,37 @@
+﻿# Fleet unified launcher - do not edit logic here.
+# Change fleet-start.config.ps1 at the repo root instead.
 param(
     [switch]$Headless,
     [switch]$BackendOnly,
     [switch]$FrontendOnly,
-    [switch]$NoBrowser
+    [switch]$NoBrowser,
+    [switch]$ReuseIfRunning
 )
 
-$ErrorActionPreference = "Stop"
-$WebRoot = $PSScriptRoot
-$ProjectRoot = Split-Path -Parent $WebRoot
-$BackendPort = 11020
-$FrontendPort = 11021
+$ErrorActionPreference = 'Stop'
+$ReposRoot = if ($env:FLEET_REPOS_ROOT) { $env:FLEET_REPOS_ROOT } else { 'D:\Dev\repos' }
+$EnginePath = Join-Path $ReposRoot 'mcp-central-docs\scripts\Invoke-FleetWebappStart.ps1'
+if (-not (Test-Path -LiteralPath $EnginePath)) {
+    Write-Host "ERROR: Missing fleet start engine: $EnginePath" -ForegroundColor Red
+    exit 1
+}
+. $EnginePath
 
-Write-Host "=== Steam-MCP webapp launcher ===" -ForegroundColor Cyan
-
-foreach ($port in @($BackendPort, $FrontendPort)) {
-    Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue | ForEach-Object {
-        if ($_.OwningProcess -gt 4) {
-            Write-Host "Killing stale process $($_.OwningProcess) on port $port" -ForegroundColor Yellow
-            Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue
-        }
+$configCandidates = @(
+    (Join-Path $PSScriptRoot 'fleet-start.config.ps1'),
+    (Join-Path (Split-Path -Parent $PSScriptRoot) 'fleet-start.config.ps1')
+)
+$configPath = $null
+foreach ($candidate in $configCandidates) {
+    if (Test-Path -LiteralPath $candidate) {
+        $configPath = $candidate
+        break
     }
 }
-
-if (-not $FrontendOnly) {
-    Write-Host "Starting backend on port $BackendPort..." -ForegroundColor Green
-    $backendCmd = "`$env:PYTHONPATH = '$ProjectRoot\src'; Set-Location '$ProjectRoot'; uv run uvicorn steam_mcp.server:app --host 127.0.0.1 --port $BackendPort --log-level warning"
-    Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd -WorkingDirectory $ProjectRoot
-
-    $ready = $false
-    for ($i = 0; $i -lt 90; $i++) {
-        try {
-            $c = [System.Net.Sockets.TcpClient]::new()
-            $c.Connect("127.0.0.1", $BackendPort)
-            $c.Close()
-            $ready = $true
-            break
-        } catch {
-            Start-Sleep -Seconds 1
-        }
-    }
-    if (-not $ready) {
-        Write-Host "Backend did not listen on $BackendPort within 90s" -ForegroundColor Red
-        exit 1
-    }
-    Write-Host "Backend ready." -ForegroundColor Green
+if (-not $configPath) {
+    Write-Host 'ERROR: Missing fleet-start.config.ps1 (repo root or beside start.ps1).' -ForegroundColor Red
+    exit 1
 }
 
-if (-not $BackendOnly) {
-    Set-Location $WebRoot
-    if (-not (Test-Path "node_modules")) { npm install }
-    Write-Host "Starting Vite on port $FrontendPort..." -ForegroundColor Green
-    if (-not $NoBrowser) {
-        $url = "http://127.0.0.1:$FrontendPort/"
-        $poll = "for (`$i=0; `$i -lt 60; `$i++) { try { `$null = Invoke-WebRequest -Uri '$url' -TimeoutSec 2 -UseBasicParsing; Start-Process '$url'; break } catch { Start-Sleep 1 } }"
-        Start-Process powershell -ArgumentList "-NoProfile", "-WindowStyle", "Hidden", "-Command", $poll
-    }
-    npm run dev -- --port $FrontendPort --host
-}
+Start-FleetWebapp @PSBoundParameters -ConfigPath $configPath -LauncherRoot $PSScriptRoot
+
