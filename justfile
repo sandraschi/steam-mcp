@@ -60,3 +60,9 @@ ports:
     @echo "Backend:  11020"
     @echo "Frontend: 11021"
     @echo "MCP HTTP: 11020/mcp"
+
+# Bootstrap: install dev deps + pre-commit hook
+bootstrap:
+    uv sync --group dev
+    uv run pre-commit install
+    Write-Host "Pre-commit hooks installed." -ForegroundColor Green
