@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from pathlib import Path
 
 from . import checklist, config, steamcmd_runner, vdf
@@ -49,7 +50,7 @@ async def upload_build(
         if not gen.get("success"):
             return gen
         app_build_vdf = gen["app_build_vdf"]
-    return steamcmd_runner.run_app_build(app_build_vdf, dry_run=dry_run)
+    return await asyncio.to_thread(steamcmd_runner.run_app_build, app_build_vdf, dry_run=dry_run)
 
 
 async def upload_prerelease(content_root: str = "", dry_run: bool = True) -> dict:
