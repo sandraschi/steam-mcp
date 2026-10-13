@@ -52,7 +52,7 @@ if (-not $FrontendOnly) {
 if (-not $BackendOnly) {
     Write-Host "Starting frontend on port $FrontendPort..." -ForegroundColor Green
     $WebRoot = Join-Path $ScriptRoot "webapp"
-    $frontendProc = Start-Process -NoNewWindow -FilePath "npx" -ArgumentList "vite --port $FrontendPort --host" -WorkingDirectory $WebRoot -PassThru
+    $frontendProc = Start-Process -NoNewWindow -FilePath "cmd.exe" -ArgumentList "/c","npx vite --port $FrontendPort --host" -WorkingDirectory $WebRoot -PassThru
 
     # Wait for frontend
     Write-Host "Waiting for frontend..." -ForegroundColor Yellow

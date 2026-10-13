@@ -1,15 +1,16 @@
-﻿# Per-repo fleet start config for steam-mcp
+# Per-repo fleet start config for steam-mcp
 # Edit ports/backend target here - start.ps1 is fleet-standard.
 @{
     Name         = 'steam-mcp'
     BackendPort  = 11020
     FrontendPort = 11021
     HealthPath   = '/health'
-    WebRoot      = 'D:\Dev\repos\steam-mcp\webapp'
+    WebRoot      = 'webapp'
     Backend = @{
         Kind          = 'uvicorn'
         UvicornTarget = 'steam_mcp.server:app'
         SyncExtras    = @('dev')
+        SyncOnStart  = $true
         Env           = @{ WEB_PORT = '11020' }
     }
     Frontend = @{

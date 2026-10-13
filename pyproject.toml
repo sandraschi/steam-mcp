@@ -52,3 +52,9 @@ ignore = ["S101", "S106", "S110", "S112", "S101", "S106", "S110", "S112", "RUF01
 
 [tool.ruff.format]
 quote-style = "double"
+
+[dependency-groups]
+dev = [
+    "pyinstaller>=6.22.2",
+    "pywin32>=311",
+]
