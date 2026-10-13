@@ -77,7 +77,7 @@ if (Test-Path $envSrc) {
 } else {
     Write-Host "  WARNING: No .env at repo root - create one from .env.example for credentials" -ForegroundColor DarkYellow
     Set-Content -Path "$ResourceDir\.env" -Value "# Empty - configure via Settings page" -Encoding utf8
-} -ForegroundColor Green
+}
 
 Write-Host "  Smoke-testing frozen binary..." -ForegroundColor Yellow
 $testPort = 11999
