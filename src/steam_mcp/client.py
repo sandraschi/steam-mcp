@@ -28,5 +28,5 @@ async def close_client() -> None:
 
 def get_client() -> httpx.AsyncClient:
     if _client is None:
-        raise RuntimeError("HTTP client not initialized — server lifespan did not run")
+        raise RuntimeError("HTTP client not initialized - server lifespan did not run")
     return _client

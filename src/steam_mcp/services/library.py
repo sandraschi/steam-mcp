@@ -91,5 +91,5 @@ async def get_wishlist(steamid: str = "") -> dict:
     items = resp.json().get("response", {}).get("items", [])
     lines = [f"## Wishlist ({len(items)} items)", ""]
     for item in items[:25]:
-        lines.append(f"- App `{item.get('appid')}` — priority {item.get('priority', 0)}")
+        lines.append(f"- App `{item.get('appid')}` - priority {item.get('priority', 0)}")
     return result(True, "\n".join(lines), {"items": items})

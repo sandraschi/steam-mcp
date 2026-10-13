@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from . import __version__
 from .client import close_client, init_client
 from .config import settings
-from .mcp import tools as _tools  # noqa: F401 — triggers @mcp.tool registration
+from .mcp import tools as _tools  # noqa: F401 - triggers @mcp.tool registration
 from .mcp.registry import mcp
 from .web import setup_webapp
 

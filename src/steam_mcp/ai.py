@@ -25,7 +25,7 @@ class SteamAIRouter:
         self.model = settings.ai_model
 
     _SYSTEM = (
-        "You are Steam-MCP assistant. Reply with ONE JSON object only — no markdown fences.\n"
+        "You are Steam-MCP assistant. Reply with ONE JSON object only - no markdown fences.\n"
         'Schema: {"tool": "steam_store", "arguments": {"operation": "search", "query": "Godot"}}\n'
         "Tools and operations:\n"
         "- steam_profile: own, summaries, friends, resolve_vanity\n"

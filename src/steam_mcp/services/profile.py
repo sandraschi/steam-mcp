@@ -51,7 +51,7 @@ async def get_friend_list(steamid: str, relationship: str = "all") -> dict:
     friends = resp.json().get("friendslist", {}).get("friends", [])
     lines = [f"## Friends ({len(friends)})", ""]
     for f in friends[:30]:
-        lines.append(f"- `{f.get('steamid')}` — since {f.get('friend_since', '?')}")
+        lines.append(f"- `{f.get('steamid')}` - since {f.get('friend_since', '?')}")
     return result(True, "\n".join(lines), {"friends": friends})
 
 

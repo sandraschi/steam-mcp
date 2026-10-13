@@ -7,7 +7,7 @@ from ..registry import mcp
 
 @mcp.prompt
 def steam_library_review(app_id: int = 0) -> str:
-    """Review a Steam library or single game — achievements, playtime, store context."""
+    """Review a Steam library or single game - achievements, playtime, store context."""
     focus = f" for app `{app_id}`" if app_id else ""
     return (
         f"You are a Steam gaming analyst. Use steam_library and steam_stats tools{focus}. "

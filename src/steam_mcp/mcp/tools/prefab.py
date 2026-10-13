@@ -24,7 +24,7 @@ try:
         _PREFAB_UI = False
 except ImportError:
     _PREFAB_UI = False
-    logger.info("prefab-ui not installed — using plain dict fallbacks")
+    logger.info("prefab-ui not installed - using plain dict fallbacks")
 
 
 def _plain_status() -> dict:
@@ -64,7 +64,7 @@ if _PREFAB_UI:
         with Column(gap=2) as view:
             Heading("Owned Games")
             for g in games[:12]:
-                Text(f"{g.get('name', g.get('appid'))} — {(g.get('playtime_forever') or 0) // 60}h")
+                Text(f"{g.get('name', g.get('appid'))} - {(g.get('playtime_forever') or 0) // 60}h")
         return PrefabApp(view=view, title="Steam Library")
 
     @mcp.tool(app=True, version=TOOL_VERSION)
@@ -90,7 +90,7 @@ if _PREFAB_UI:
             return res
         items = (res.get("data") or {}).get("items", [])
         with Column(gap=2) as view:
-            Heading(f"Workshop — app {app_id}")
+            Heading(f"Workshop - app {app_id}")
             for item in items[:10]:
                 Text(f"{item.get('title', '?')} ({item.get('publishedfileid')})")
         return PrefabApp(view=view, title="Steam Workshop")

@@ -1,4 +1,4 @@
-"""Lightweight chat orchestrator for the webapp — rules + optional Ollama LLM."""
+"""Lightweight chat orchestrator for the webapp - rules + optional Ollama LLM."""
 
 from __future__ import annotations
 
