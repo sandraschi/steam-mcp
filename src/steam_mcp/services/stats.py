@@ -29,7 +29,7 @@ async def get_player_achievements(steamid: str, app_id: int) -> dict:
     achievements = player_stats.get("achievements", [])
     unlocked = sum(1 for a in achievements if a.get("achieved"))
     game_name = player_stats.get("gameName", str(app_id))
-    lines = [f"## Achievements — {game_name}", f"Unlocked **{unlocked}/{len(achievements)}**", ""]
+    lines = [f"## Achievements - {game_name}", f"Unlocked **{unlocked}/{len(achievements)}**", ""]
     for a in achievements[:20]:
         mark = "✓" if a.get("achieved") else "○"
         lines.append(f"- {mark} {a.get('name', '?')}")
@@ -49,7 +49,7 @@ async def get_global_achievement_percentages(app_id: int) -> dict:
     if resp.status_code != 200:
         return error(f"API error: {resp.status_code}")
     achievements = resp.json().get("achievementpercentages", {}).get("achievements", [])
-    lines = [f"## Global achievements — app `{app_id}`", ""]
+    lines = [f"## Global achievements - app `{app_id}`", ""]
     for a in achievements[:15]:
         pct = float(a.get("percent", 0) or 0)
         lines.append(f"- {a.get('name', '?')}: **{pct:.1f}%**")
@@ -80,7 +80,7 @@ async def get_game_leaderboards(app_id: int) -> dict:
     if resp.status_code != 200:
         return error(f"API error: {resp.status_code}")
     lbs = resp.json().get("response", {}).get("leaderboards", [])
-    lines = [f"## Leaderboards — app `{app_id}`", ""]
+    lines = [f"## Leaderboards - app `{app_id}`", ""]
     for lb in lbs[:20]:
         lines.append(f"- **{lb.get('name', '?')}** (id `{lb.get('leaderboardid')}`)")
     return result(True, "\n".join(lines), {"leaderboards": lbs})

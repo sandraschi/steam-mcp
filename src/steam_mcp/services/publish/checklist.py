@@ -25,7 +25,7 @@ def publish_checklist(*, build_path: str = "", branch: str = "") -> dict[str, An
             "required": True,
             "automated": False,
             "done": False,
-            "hint": "https://partner.steamgames.com — $100 USD per app (recoupable)",
+            "hint": "https://partner.steamgames.com - $100 USD per app (recoupable)",
         },
         {
             "id": "app_id",
@@ -124,7 +124,7 @@ def monetization_guide() -> dict[str, Any]:
             {"id": "free_game", "allowed": True, "note": "Set base price $0.00 in Steamworks"},
             {"id": "dlc", "note": "Create separate App IDs / depots for DLC in Steamworks"},
             {"id": "bundles", "note": "Package deals configured in Steamworks Packages"},
-            {"id": "sales", "note": "Steam seasonal sales — opt in via partner dashboard"},
+            {"id": "sales", "note": "Steam seasonal sales - opt in via partner dashboard"},
         ],
         "prerelease_flow": "Coming Soon store page + upload to beta branch + internal playtest keys",
         "release_flow": "Complete checklist → set live on default branch → Valve review → Released",

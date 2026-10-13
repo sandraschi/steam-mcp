@@ -52,9 +52,9 @@ async def query_workshop_items(
     response = resp.json().get("response", {})
     files = response.get("publishedfiledetails", [])
     total = response.get("total", 0)
-    lines = [f"## Workshop — app `{app_id}` ({total} items)", ""]
+    lines = [f"## Workshop - app `{app_id}` ({total} items)", ""]
     for f in files[:15]:
-        lines.append(f"- **{f.get('title', '?')}** — id `{f.get('publishedfileid')}`")
+        lines.append(f"- **{f.get('title', '?')}** - id `{f.get('publishedfileid')}`")
     return result(True, "\n".join(lines), {"items": files, "total": total})
 
 
@@ -75,5 +75,5 @@ async def get_workshop_item_details(published_file_ids: str) -> dict:
     details = resp.json().get("response", {}).get("publishedfiledetails", [])
     lines = ["## Workshop item details", ""]
     for d in details:
-        lines.append(f"- **{d.get('title', '?')}** — {d.get('file_size', 0)} bytes")
+        lines.append(f"- **{d.get('title', '?')}** - {d.get('file_size', 0)} bytes")
     return result(True, "\n".join(lines), {"items": details})

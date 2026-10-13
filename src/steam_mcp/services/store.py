@@ -16,7 +16,7 @@ async def get_news_for_app(app_id: int, count: int = 5, max_length: int = 0) -> 
     if resp.status_code != 200:
         return error(f"API error: {resp.status_code}")
     items = resp.json().get("appnews", {}).get("newsitems", [])
-    lines = [f"## News — app `{app_id}`", ""]
+    lines = [f"## News - app `{app_id}`", ""]
     for item in items[:count]:
         lines.append(f"- **{item.get('title', '?')}** ({item.get('date', '?')})")
     return result(True, "\n".join(lines), {"appid": app_id, "newsitems": items})
@@ -44,7 +44,7 @@ async def get_app_reviews(app_id: int, count: int = 10) -> dict:
     summary = data.get("query_summary", {})
     reviews = data.get("reviews", [])
     lines = [
-        f"## Reviews — app `{app_id}`",
+        f"## Reviews - app `{app_id}`",
         f"- **Total:** {summary.get('total_reviews', 0)}",
         f"- **Score:** {summary.get('review_score_desc', 'N/A')}",
         "",

@@ -88,7 +88,7 @@ def generate_build_vdfs(
     output.mkdir(parents=True, exist_ok=True)
 
     branch_name = branch or config.steam_branch()
-    build_desc = desc or f"Build {config.steam_build_id()} — {branch_name}"
+    build_desc = desc or f"Build {config.steam_build_id()} - {branch_name}"
 
     depot_vdf = scripts / f"depot_build_{did}.vdf"
     app_vdf = scripts / f"app_build_{aid}.vdf"
